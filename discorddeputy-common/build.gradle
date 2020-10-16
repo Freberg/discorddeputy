@@ -1,7 +1,6 @@
 dependencies {
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.2'
 
-
     def immutablesVersion = "2.8.8"
     annotationProcessor "org.immutables:value:$immutablesVersion"
     compileOnly "org.immutables:value:$immutablesVersion"

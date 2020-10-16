@@ -1,6 +1,7 @@
 package com.freberg.discorddeputy.command;
 
 import javax.annotation.PostConstruct;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +26,8 @@ public class CommandFactory {
     private void register(Command command) {
         commands.compute(command.getCommand(), (key, value) -> {
             if (value != null) {
-                log.warn("Command for \"{}\" already registered, \"{}\"", key, value);
+                log.error("Command for \"{}\" already registered, \"{}\"", key, value);
+                throw new RuntimeException("Colliding discord commands detected");
             }
             return command;
         });
@@ -33,5 +35,9 @@ public class CommandFactory {
 
     public Command resolveCommandFromString(String command) {
         return commands.get(command);
+    }
+
+    public Collection<Command> getAllCommands() {
+        return commands.values();
     }
 }
