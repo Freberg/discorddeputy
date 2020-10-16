@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  fetcher-epic:
+    image: "discorddeputy/fetcher-epic:latest"
+    environment:
+      RABBIT_HOST: rabbit
+    ports:
+      - "8081:8081"
+    networks:
+      - "proxy-net"
+
+networks:
+  proxy-net:
+    external:
+      name: "shared_net"

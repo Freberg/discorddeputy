@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+  bot:
+    image: "discorddeputy/bot:latest"
+    environment:
+      RABBIT_HOST: rabbit
+      DISCORD_TOKEN: ${DISCORD_TOKEN}
+      API_EPIC_GAMES_HOST: http://api:8082
+
+    ports:
+      - "8083:8083"
+    networks:
+      - "proxy-net"
+
+networks:
+  proxy-net:
+    external:
+      name: "shared_net"

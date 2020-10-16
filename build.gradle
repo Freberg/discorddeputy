@@ -1,0 +1,28 @@
+ext {
+	springVersion = "2.3.4.RELEASE"
+	springManagmentVersion = "1.0.10.RELEASE"
+	springCloudVersion = "Hoxton.SR8"
+}
+
+allprojects {
+
+	apply plugin: 'java'
+
+	group = 'com.freberg'
+	version = '0.0.1-SNAPSHOT'
+	sourceCompatibility = '15'
+
+	configurations {
+		compileOnly {
+			extendsFrom annotationProcessor
+		}
+	}
+
+	repositories {
+		mavenCentral()
+	}
+
+	test {
+		useJUnitPlatform()
+	}
+}

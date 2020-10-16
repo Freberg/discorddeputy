@@ -1,0 +1,10 @@
+server.port: 8083
+spring:
+  rabbitmq:
+    host: ${RABBIT_HOST:localhost}
+    port: ${RABBIT_PORT:5672}
+    username: ${RABBIT_USERNAME:rabbitmq}
+    password: ${RABBIT_PASSWORD:rabbitmq}
+  cloud.stream.bindings.input.destination: ${RABBIT_OUTPUT_DESTINATION:newEpicGamesOffers}
+
+discorddeputy.epicgames.api.host: ${API_EPIC_GAMES_HOST:http://rabbit:8082}
