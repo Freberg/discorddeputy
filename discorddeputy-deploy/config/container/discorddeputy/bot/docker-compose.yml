@@ -9,7 +9,7 @@ services:
       API_EPIC_GAMES_HOST: http://api:8082
 
     ports:
-      - "8083:8083"
+      - "9083:8083"
     networks:
       - "proxy-net"
 

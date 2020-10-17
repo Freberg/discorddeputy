@@ -6,7 +6,7 @@ services:
     environment:
       RABBIT_HOST: rabbit
     ports:
-      - "8081:8081"
+      - "9081:8081"
     networks:
       - "proxy-net"
 
