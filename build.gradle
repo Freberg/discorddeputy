@@ -8,7 +8,6 @@ allprojects {
 
 	apply plugin: 'java'
 	apply plugin: 'maven'
-	apply plugin: 'jacoco'
 
 	group = 'com.freberg'
 	version = '0.0.1-SNAPSHOT'
