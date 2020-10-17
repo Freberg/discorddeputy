@@ -13,10 +13,6 @@ allprojects {
 	version = '0.0.1-SNAPSHOT'
 	sourceCompatibility = '15'
 
-	jacoco {
-		toolVersion = "0.8.6"
-	}
-
 	configurations {
 		compileOnly {
 			extendsFrom annotationProcessor
