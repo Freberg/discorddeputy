@@ -1,6 +1,5 @@
 package com.freberg.discorddeputy.bot;
 
-import javax.annotation.PostConstruct;
 import java.util.Optional;
 
 import com.freberg.discorddeputy.command.CommandFactory;
@@ -18,29 +17,22 @@ import discord4j.discordjson.json.MessageCreateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class DiscordDeputyBot implements Runnable {
+public class DiscordDeputyBot implements ApplicationRunner {
 
     private static final String ENV_VAR_DISCORD_TOKEN = "DISCORD_TOKEN";
-    private final Logger logger = LoggerFactory.getLogger(getClass());
     private final CommandFactory commandFactory;
 
     private GatewayDiscordClient client;
 
-    @PostConstruct
-    public void init() {
-        new Thread(this, "Discord Bot")
-                .start();
-    }
-
     @Override
-    public void run() {
+    public void run(ApplicationArguments args) throws Exception {
         client = DiscordClientBuilder.create(getToken())
                                      .build()
                                      .login()
@@ -73,11 +65,11 @@ public class DiscordDeputyBot implements Runnable {
     }
 
     private void onReadyEvent(ReadyEvent readyEvent) {
-        logger.info("Logged in as {}", readyEvent.getSelf().getUsername());
+        log.info("Logged in as {}", readyEvent.getSelf().getUsername());
     }
 
     private void onMessageCreateEvent(MessageCreateEvent messageCreateEvent) {
-        logger.info("Received message from \"{}\"", messageCreateEvent.getMember().orElse(null));
+        log.info("Received message from \"{}\"", messageCreateEvent.getMember().orElse(null));
         Optional.of(messageCreateEvent)
                 .map(MessageCreateEvent::getMessage)
                 .map(Message::getContent)

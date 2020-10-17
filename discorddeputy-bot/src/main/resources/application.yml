@@ -7,4 +7,4 @@ spring:
     password: ${RABBIT_PASSWORD:rabbitmq}
   cloud.stream.bindings.input.destination: ${RABBIT_OUTPUT_DESTINATION:newEpicGamesOffers}
 
-discorddeputy.epicgames.api.host: ${API_EPIC_GAMES_HOST:http://rabbit:8082}
+discorddeputy.epicgames.api.host: ${API_EPIC_GAMES_HOST:http://localhost:8082}
