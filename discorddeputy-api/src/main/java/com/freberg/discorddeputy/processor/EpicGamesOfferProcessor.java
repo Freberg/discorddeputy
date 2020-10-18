@@ -35,7 +35,7 @@ public class EpicGamesOfferProcessor {
     }
 
     private Mono<EpicGamesOffer> persist(EpicGamesOffer offer) {
-        log.info("Persisted new offer with ID \"{}\" to DB", offer.getId());
+        log.info("Persisted new offer with ID \"{}\" to DB", offer.getId())
         return repository.save(offer);
     }
 
