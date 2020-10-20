@@ -9,6 +9,6 @@ class CommandFactoryTest {
     void verifyNoCommandCollision() {
         CommandFactory commandFactory = new CommandFactory(null);
         commandFactory.init();
-        Assertions.assertEquals(1, commandFactory.getAllCommands().size());
+        Assertions.assertEquals(2, commandFactory.getAllCommands().size());
     }
 }
