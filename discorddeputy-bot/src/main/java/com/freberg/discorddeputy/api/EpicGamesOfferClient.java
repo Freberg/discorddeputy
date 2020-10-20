@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public class EpicGamesOfferClient {
 
     private static final String API_END_POINT_CURRENT = "/api/epicGames/currentOffers";
-    private static final String API_END_POINT_UPCOMING = "/api/epicGames/currentOffers";
+    private static final String API_END_POINT_UPCOMING = "/api/epicGames/upcomingOffers";
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Value("${discorddeputy.epicgames.api.host}")

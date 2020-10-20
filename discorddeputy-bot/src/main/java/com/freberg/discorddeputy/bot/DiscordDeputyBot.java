@@ -69,6 +69,13 @@ public class DiscordDeputyBot implements ApplicationRunner {
     }
 
     private void onMessageCreateEvent(MessageCreateEvent messageCreateEvent) {
+        boolean isBot = messageCreateEvent.getMessage().getUserData().bot()
+                                          .toOptional()
+                                          .orElse(false);
+        if (isBot) {
+            return;
+        }
+
         log.info("Received message from \"{}\"", messageCreateEvent.getMember().orElse(null));
         Optional.of(messageCreateEvent)
                 .map(MessageCreateEvent::getMessage)
@@ -79,7 +86,11 @@ public class DiscordDeputyBot implements ApplicationRunner {
     }
 
     private String getCommandFromMessage(String message) {
-        return message;
+        return Optional.ofNullable(message)
+                       .map(str -> str.split(" "))
+                       .filter(words -> words.length > 0)
+                       .map(words -> words[0])
+                       .orElse(null);
     }
 
     private String getToken() {

@@ -60,7 +60,7 @@ public class EpicGamesOfferController {
     }
 
     private Instant getEndDate(EpicGamesOffer epicGamesOffer) {
-        return Optional.ofNullable(getCurrentTimeLimit(epicGamesOffer, EpicGamesPromotionalOffer::getStartDate))
+        return Optional.ofNullable(getCurrentTimeLimit(epicGamesOffer, EpicGamesPromotionalOffer::getEndDate))
                        .orElse(getUpcomingTimeLimit(epicGamesOffer, EpicGamesPromotionalOffer::getEndDate));
     }
 
