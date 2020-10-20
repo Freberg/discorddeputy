@@ -1,7 +1,16 @@
 dependencies {
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.2'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
 
     def immutablesVersion = "2.8.8"
     annotationProcessor "org.immutables:value:$immutablesVersion"
     compileOnly "org.immutables:value:$immutablesVersion"
+    implementation "com.google.code.findbugs:jsr305:3.0.2"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-engine"
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:${springVersion}"
+    }
 }

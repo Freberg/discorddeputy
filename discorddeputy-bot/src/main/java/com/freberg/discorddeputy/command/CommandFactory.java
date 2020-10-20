@@ -20,7 +20,7 @@ public class CommandFactory {
 
     @PostConstruct
     public void init() {
-        register(new ListEpicGamesOffersCommand(epicGamesOfferClient));
+        register(new ListOffersCommand(epicGamesOfferClient));
     }
 
     private void register(Command command) {

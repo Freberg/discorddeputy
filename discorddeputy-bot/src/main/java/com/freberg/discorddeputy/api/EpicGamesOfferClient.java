@@ -20,7 +20,8 @@ import reactor.core.publisher.Mono;
 @Component
 public class EpicGamesOfferClient {
 
-    private static final String API_END_POINT = "/api/epicGames/currentOffers";
+    private static final String API_END_POINT_CURRENT = "/api/epicGames/currentOffers";
+    private static final String API_END_POINT_UPCOMING = "/api/epicGames/currentOffers";
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Value("${discorddeputy.epicgames.api.host}")
@@ -32,9 +33,17 @@ public class EpicGamesOfferClient {
         webClient = WebClient.create(apiHost);
     }
 
-    public Mono<List<EpicGamesOffer>> getAllCurrentOffers() {
+    public Mono<List<EpicGamesOffer>> getCurrentOffers() {
+        return getCurrentOffers(API_END_POINT_CURRENT);
+    }
+
+    public Mono<List<EpicGamesOffer>> getUpcomingOffers() {
+        return getCurrentOffers(API_END_POINT_UPCOMING);
+    }
+
+    private Mono<List<EpicGamesOffer>> getCurrentOffers(String endPoint) {
         return webClient.get()
-                        .uri(API_END_POINT)
+                        .uri(endPoint)
                         .accept(MediaType.APPLICATION_JSON)
                         .exchange()
                         .flatMap(response -> response.bodyToMono(String.class))

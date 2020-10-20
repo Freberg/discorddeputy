@@ -24,4 +24,6 @@ public interface EpicGamesOffer {
     EpicGamesPrice getPrice();
 
     List<EpicGamesImage> getKeyImages();
+
+    EpicGamesPromotions getPromotions();
 }
