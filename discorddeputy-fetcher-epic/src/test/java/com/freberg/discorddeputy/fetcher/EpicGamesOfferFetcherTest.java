@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import reactor.test.StepVerifier;
 
-@SpringBootTest(properties = {"epicGames.pollFrequency.duration=1", "epicGames.pollFrequency.timeUnit=SECONDS"})
+@SpringBootTest
 class EpicGamesOfferFetcherTest {
 
     @Autowired

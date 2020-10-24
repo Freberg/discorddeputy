@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import reactor.test.StepVerifier
 import java.util.*
 
-@SpringBootTest(properties = ["steam.pollFrequency.duration=1", "steam.pollFrequency.timeUnit=SECONDS"])
+@SpringBootTest
 class StreamNewsFetcherTest {
 
     @Autowired
