@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.freberg.discorddeputy.message.EpicGamesOffer;
+import com.freberg.discorddeputy.message.epic.EpicGamesOffer;
 import com.freberg.discorddeputy.repository.EpicGamesOfferRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.freberg.discorddeputy.message.EpicGamesOffer;
+import com.freberg.discorddeputy.message.epic.EpicGamesOffer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -38,7 +38,7 @@ public class EpicGamesOfferFetcher {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
-    public Flux<EpicGamesOffer> getOffers() {
+    public Flux<EpicGamesOffer> fetchOffers() {
         return Flux.interval(Duration.ZERO, Duration.of(pollFrequencyDuration, timeUnit))
                    .flatMap(timestamp -> webClient.get()
                                                   .uri(EPIC_GAMES_URI)

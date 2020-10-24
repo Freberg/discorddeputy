@@ -15,7 +15,7 @@ class EpicGamesOfferFetcherTest {
 
     @Test
     void verifyOffersNonEmpty() {
-        StepVerifier.create(epicGamesOfferFetcher.getOffers())
+        StepVerifier.create(epicGamesOfferFetcher.fetchOffers())
                     .expectNextMatches(Objects::nonNull)
                     .thenCancel()
                     .verify();

@@ -1,7 +1,7 @@
 package com.freberg.discorddeputy.subcriber;
 
 import com.freberg.discorddeputy.bot.DiscordDeputyBot;
-import com.freberg.discorddeputy.message.EpicGamesOffer;
+import com.freberg.discorddeputy.message.epic.EpicGamesOffer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.annotation.EnableBinding;

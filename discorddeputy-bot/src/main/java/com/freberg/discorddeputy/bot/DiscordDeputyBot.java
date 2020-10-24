@@ -3,7 +3,7 @@ package com.freberg.discorddeputy.bot;
 import java.util.Optional;
 
 import com.freberg.discorddeputy.command.CommandFactory;
-import com.freberg.discorddeputy.message.EpicGamesOffer;
+import com.freberg.discorddeputy.message.epic.EpicGamesOffer;
 import com.freberg.discorddeputy.reponse.DiscordResponseUtil;
 import discord4j.core.DiscordClientBuilder;
 import discord4j.core.GatewayDiscordClient;

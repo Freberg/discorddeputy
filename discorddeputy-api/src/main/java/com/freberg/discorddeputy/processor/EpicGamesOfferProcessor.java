@@ -1,6 +1,6 @@
 package com.freberg.discorddeputy.processor;
 
-import com.freberg.discorddeputy.message.EpicGamesOffer;
+import com.freberg.discorddeputy.message.epic.EpicGamesOffer;
 import com.freberg.discorddeputy.repository.EpicGamesOfferRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

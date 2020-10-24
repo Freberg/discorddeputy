@@ -1,0 +1,12 @@
+server.port: 8084
+spring:
+  rabbitmq:
+    host: ${RABBIT_HOST:localhost}
+    port: ${RABBIT_PORT:5672}
+    username: ${RABBIT_USERNAME:rabbitmq}
+    password: ${RABBIT_PASSWORD:rabbitmq}
+  cloud.stream.bindings.output.destination: ${RABBIT_OUTPUT_DESTINATION:steamNews}
+
+steam.pollFrequency:
+  duration: 30
+  timeUnit: MINUTES

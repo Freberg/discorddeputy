@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
-import com.freberg.discorddeputy.message.EpicGamesOffer;
-import com.freberg.discorddeputy.message.EpicGamesPromotionalOffer;
-import com.freberg.discorddeputy.message.EpicGamesPromotionalOffers;
-import com.freberg.discorddeputy.message.EpicGamesPromotions;
+import com.freberg.discorddeputy.message.epic.EpicGamesOffer;
+import com.freberg.discorddeputy.message.epic.EpicGamesPromotionalOffer;
+import com.freberg.discorddeputy.message.epic.EpicGamesPromotionalOffers;
+import com.freberg.discorddeputy.message.epic.EpicGamesPromotions;
 import com.freberg.discorddeputy.repository.EpicGamesOfferRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

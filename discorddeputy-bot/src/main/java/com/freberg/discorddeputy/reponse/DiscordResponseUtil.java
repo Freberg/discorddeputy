@@ -6,10 +6,10 @@ import java.util.Collection;
 import java.util.Optional;
 
 import com.freberg.discorddeputy.constant.DiscordDeputyConstants;
-import com.freberg.discorddeputy.message.EpicGamesImage;
-import com.freberg.discorddeputy.message.EpicGamesOffer;
-import com.freberg.discorddeputy.message.EpicGamesPrice;
-import com.freberg.discorddeputy.message.EpicGamesTotalPrice;
+import com.freberg.discorddeputy.message.epic.EpicGamesImage;
+import com.freberg.discorddeputy.message.epic.EpicGamesOffer;
+import com.freberg.discorddeputy.message.epic.EpicGamesPrice;
+import com.freberg.discorddeputy.message.epic.EpicGamesTotalPrice;
 import discord4j.core.spec.EmbedCreateSpec;
 import discord4j.rest.util.Color;
 

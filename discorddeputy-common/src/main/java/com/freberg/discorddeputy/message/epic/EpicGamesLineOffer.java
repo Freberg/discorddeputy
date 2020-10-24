@@ -1,4 +1,4 @@
-package com.freberg.discorddeputy.message;
+package com.freberg.discorddeputy.message.epic;
 
 import java.util.List;
 

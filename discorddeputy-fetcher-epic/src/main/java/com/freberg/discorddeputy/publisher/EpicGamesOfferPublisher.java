@@ -23,7 +23,7 @@ public class EpicGamesOfferPublisher implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        fetcher.getOffers()
+        fetcher.fetchOffers()
                .flatMap(offer -> Mono.fromCallable(() -> {
                    source.output().send(MessageBuilder.withPayload(offer)
                                                       .build());

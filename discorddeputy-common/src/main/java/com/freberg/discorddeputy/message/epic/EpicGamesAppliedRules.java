@@ -1,4 +1,4 @@
-package com.freberg.discorddeputy.message;
+package com.freberg.discorddeputy.message.epic;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
