@@ -1,6 +1,5 @@
 package com.freberg.discorddeputy.processor
 
-import com.freberg.discorddeputy.message.epic.EpicGamesOffer
 import com.freberg.discorddeputy.message.steam.SteamNews
 import com.freberg.discorddeputy.repository.StreamNewsRepository
 import org.junit.jupiter.api.Assertions
@@ -43,7 +42,7 @@ class EpicGamesOfferProcessorTest {
         val saveCallCount = AtomicInteger()
         Mockito.`when`(repository.save(Mockito.any()))
                 .thenAnswer(Answer<Any> { invocation: InvocationOnMock ->
-                    val offer = invocation.arguments[0] as EpicGamesOffer
+                    val offer = invocation.arguments[0] as SteamNews
                     saveCallCount.incrementAndGet()
                     Mono.just(offer)
                 })
@@ -63,7 +62,7 @@ class EpicGamesOfferProcessorTest {
         val saveCallCount = AtomicInteger()
         Mockito.`when`(repository.save(Mockito.any()))
                 .thenAnswer(Answer<Any> { invocation: InvocationOnMock ->
-                    val offer = invocation.arguments[0] as EpicGamesOffer
+                    val offer = invocation.arguments[0] as SteamNews
                     Mono.just(offer)
                 })
         Mockito.`when`(channel.send(Mockito.any()))
