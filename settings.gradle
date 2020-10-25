@@ -1,6 +1,6 @@
 rootProject.name = 'discorddeputy'
 include 'discorddeputy-bot'
-include 'discorddeputy-api-ecic'
+include 'discorddeputy-api-epic'
 include 'discorddeputy-api-steam'
 include 'discorddeputy-fetcher-epic'
 include 'discorddeputy-fetcher-steam'
