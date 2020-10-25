@@ -50,10 +50,10 @@ class EpicGamesOfferProcessorTest {
                    return Mono.just(offer);
                });
 
-        processor.onNewEpicGamesOffers(newEpicGamesOffer("1"));
-        processor.onNewEpicGamesOffers(newEpicGamesOffer("1"));
-        processor.onNewEpicGamesOffers(newEpicGamesOffer("2"));
-        processor.onNewEpicGamesOffers(newEpicGamesOffer("1"));
+        processor.onEpicGamesOffer(newEpicGamesOffer("1"));
+        processor.onEpicGamesOffer(newEpicGamesOffer("1"));
+        processor.onEpicGamesOffer(newEpicGamesOffer("2"));
+        processor.onEpicGamesOffer(newEpicGamesOffer("1"));
 
         // Wait for asynchronous computations to complete
         Thread.sleep(200);
@@ -78,10 +78,10 @@ class EpicGamesOfferProcessorTest {
                    return true;
                });
 
-        processor.onNewEpicGamesOffers(newEpicGamesOffer("1"));
-        processor.onNewEpicGamesOffers(newEpicGamesOffer("1"));
-        processor.onNewEpicGamesOffers(newEpicGamesOffer("2"));
-        processor.onNewEpicGamesOffers(newEpicGamesOffer("1"));
+        processor.onEpicGamesOffer(newEpicGamesOffer("1"));
+        processor.onEpicGamesOffer(newEpicGamesOffer("1"));
+        processor.onEpicGamesOffer(newEpicGamesOffer("2"));
+        processor.onEpicGamesOffer(newEpicGamesOffer("1"));
 
         // Wait for asynchronous computations to complete
         Thread.sleep(200);

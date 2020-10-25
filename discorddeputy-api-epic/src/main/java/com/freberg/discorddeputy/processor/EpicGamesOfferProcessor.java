@@ -1,7 +1,7 @@
 package com.freberg.discorddeputy.processor;
 
-import com.freberg.discorddeputy.constant.DiscordDeputyConstants
-import com.freberg.discorddeputy.message.MessageType
+import com.freberg.discorddeputy.constant.DiscordDeputyConstants;
+import com.freberg.discorddeputy.message.MessageType;
 import com.freberg.discorddeputy.message.epic.EpicGamesOffer;
 import com.freberg.discorddeputy.repository.EpicGamesOfferRepository;
 import lombok.RequiredArgsConstructor;
