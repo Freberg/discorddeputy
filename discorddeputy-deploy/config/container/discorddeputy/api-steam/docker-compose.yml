@@ -1,13 +1,13 @@
 version: '3.7'
 
 services:
-  api:
-    image: "discorddeputy/api:latest"
+  api-steam:
+    image: "discorddeputy/api-steam:latest"
     environment:
       RABBIT_HOST: "rabbit"
       MONGO_HOST: mongo
     ports:
-      - "9082:8082"
+      - "9085:8085"
     networks:
       - "proxy-net"
       - "db-net"

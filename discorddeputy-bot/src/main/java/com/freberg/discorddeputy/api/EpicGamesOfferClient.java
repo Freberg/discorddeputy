@@ -24,7 +24,7 @@ public class EpicGamesOfferClient {
     private static final String API_END_POINT_UPCOMING = "/api/epicGames/upcomingOffers";
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Value("${discorddeputy.epicgames.api.host}")
+    @Value("${discorddeputy.api.host.epicgames}")
     private String apiHost;
     private WebClient webClient;
 

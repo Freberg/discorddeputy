@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  api-epic:
+    image: "discorddeputy/api-epic:latest"
+    environment:
+      RABBIT_HOST: "rabbit"
+      MONGO_HOST: mongo
+    ports:
+      - "9082:8082"
+    networks:
+      - "proxy-net"
+      - "db-net"
+
+networks:
+  proxy-net:
+    external:
+      name: "shared_net"
+  db-net:
+    external:
+      name: "mongo_shared_net"

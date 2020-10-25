@@ -7,6 +7,8 @@ spring:
     password: ${RABBIT_PASSWORD:rabbitmq}
   cloud.stream.bindings.output.destination: ${RABBIT_OUTPUT_DESTINATION:steamNews}
 
-steam.pollFrequency:
-  duration: 30
-  timeUnit: MINUTES
+steam:
+  apps: 594650,252950
+  pollFrequency:
+    duration: 30
+    timeUnit: MINUTES

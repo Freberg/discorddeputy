@@ -6,7 +6,8 @@ services:
     environment:
       RABBIT_HOST: rabbit
       DISCORD_TOKEN: ${DISCORD_TOKEN}
-      API_EPIC_GAMES_HOST: http://api:8082
+      API_HOST_EPIC_GAMES: http://epic-api:8082
+      API_HOST_STEAM: http://steam-api:8085
 
     ports:
       - "9083:8083"

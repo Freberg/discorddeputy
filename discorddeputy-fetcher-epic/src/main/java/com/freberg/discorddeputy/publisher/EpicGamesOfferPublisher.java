@@ -1,6 +1,8 @@
 package com.freberg.discorddeputy.publisher;
 
+import com.freberg.discorddeputy.constant.DiscordDeputyConstants;
 import com.freberg.discorddeputy.fetcher.EpicGamesOfferFetcher;
+import com.freberg.discorddeputy.message.MessageType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -26,6 +28,8 @@ public class EpicGamesOfferPublisher implements ApplicationRunner {
         fetcher.fetchOffers()
                .flatMap(offer -> Mono.fromCallable(() -> {
                    source.output().send(MessageBuilder.withPayload(offer)
+                                                      .setHeader(DiscordDeputyConstants.MESSAGE_HEADER_MESSAGE_TYPE,
+                                                              MessageType.EPIC_GAMES_OFFER)
                                                       .build());
                    log.info("Put offer with ID \"{}\" to queue", offer.getId());
                    return offer;

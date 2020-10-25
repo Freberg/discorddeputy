@@ -8,4 +8,6 @@ public class DiscordDeputyConstants {
 
     public static final String IMAGE_TYPE_OFFERING_WIDE = "OfferImageWide";
     public static final String IMAGE_TYPE_THUMBNAIL = "Thumbnail";
+
+    public static final String MESSAGE_HEADER_MESSAGE_TYPE = "MESSAGE_TYPE";
 }

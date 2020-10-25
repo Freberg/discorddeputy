@@ -1,6 +1,8 @@
 package com.freberg.discorddeputy.publisher
 
+import com.freberg.discorddeputy.constant.DiscordDeputyConstants
 import com.freberg.discorddeputy.fetcher.StreamNewsFetcher
+import com.freberg.discorddeputy.message.MessageType
 import org.slf4j.LoggerFactory
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
@@ -23,8 +25,9 @@ class StreamNewsPublisher(val fetcher: StreamNewsFetcher, val source: Source) : 
                 .flatMap {
                     Mono.fromCallable {
                         source.output().send(MessageBuilder.withPayload(it)
+                                .setHeader(DiscordDeputyConstants.MESSAGE_HEADER_MESSAGE_TYPE, MessageType.STEAM_NEWS)
                                 .build())
-                        log.info("Put news with GID \"{}\" to queue", it.gid)
+                        log.info("Put news with GID \"{}\" to queue", it.id)
                         it
                     }
                 }

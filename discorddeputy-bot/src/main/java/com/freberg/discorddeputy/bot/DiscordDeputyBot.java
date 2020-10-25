@@ -4,7 +4,9 @@ import java.util.Optional;
 
 import com.freberg.discorddeputy.command.CommandFactory;
 import com.freberg.discorddeputy.message.epic.EpicGamesOffer;
-import com.freberg.discorddeputy.reponse.DiscordResponseUtil;
+import com.freberg.discorddeputy.message.steam.SteamNews;
+import com.freberg.discorddeputy.reponse.DiscordNewsResponseUtil;
+import com.freberg.discorddeputy.reponse.DiscordOfferResponseUtil;
 import discord4j.core.DiscordClientBuilder;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.lifecycle.ReadyEvent;
@@ -13,6 +15,7 @@ import discord4j.core.object.entity.Guild;
 import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.channel.Channel;
 import discord4j.core.spec.EmbedCreateSpec;
+import discord4j.core.spec.MessageCreateSpec;
 import discord4j.discordjson.json.MessageCreateRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,16 +52,33 @@ public class DiscordDeputyBot implements ApplicationRunner {
     }
 
     public void onNewEpicGamesOffer(EpicGamesOffer offer) {
+        dispatchMessage(buildOfferMessage(offer));
+    }
+
+    public void onNewsSteamNews(SteamNews news) {
+        dispatchMessage(buildNewsMessage(news));
+    }
+
+    private void dispatchMessage(MessageCreateRequest message) {
         client.getGuilds()
               .flatMap(Guild::getChannels)
               .filter(channel -> Channel.Type.GUILD_TEXT == channel.getType())
-              .flatMap(channel -> channel.getRestChannel().createMessage(buildMessage(offer)))
+              .map(Channel::getRestChannel)
+              .flatMap(channel -> channel.createMessage(message))
               .subscribe();
     }
 
-    private MessageCreateRequest buildMessage(EpicGamesOffer offer) {
+    private MessageCreateRequest buildOfferMessage(EpicGamesOffer offer) {
         EmbedCreateSpec embedCreateSpec = new EmbedCreateSpec();
-        DiscordResponseUtil.createEpicGamesOfferMessage(offer, embedCreateSpec, false);
+        DiscordOfferResponseUtil.createEpicGamesOfferMessage(offer, embedCreateSpec, false);
+        return MessageCreateRequest.builder()
+                                   .embed(embedCreateSpec.asRequest())
+                                   .build();
+    }
+
+    private MessageCreateRequest buildNewsMessage(SteamNews news) {
+        EmbedCreateSpec embedCreateSpec = new EmbedCreateSpec();
+        DiscordNewsResponseUtil.createSteamNewsMessage(news, embedCreateSpec);
         return MessageCreateRequest.builder()
                                    .embed(embedCreateSpec.asRequest())
                                    .build();

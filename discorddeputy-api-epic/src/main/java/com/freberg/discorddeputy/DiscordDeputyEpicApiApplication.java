@@ -7,7 +7,7 @@ import reactor.blockhound.BlockHound;
 import static com.freberg.discorddeputy.constant.DiscordDeputyConstants.SYSTEM_PROPERTY_BLOCK_HOUND_ENABLED;
 
 @SpringBootApplication
-public class DiscordDeputyApiApplication {
+public class DiscordDeputyEpicApiApplication {
 
     static {
         if (System.getProperty(SYSTEM_PROPERTY_BLOCK_HOUND_ENABLED) != null) {
@@ -16,6 +16,6 @@ public class DiscordDeputyApiApplication {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(DiscordDeputyApiApplication.class);
+        SpringApplication.run(DiscordDeputyEpicApiApplication.class);
     }
 }

@@ -5,6 +5,8 @@ spring:
     port: ${RABBIT_PORT:5672}
     username: ${RABBIT_USERNAME:rabbitmq}
     password: ${RABBIT_PASSWORD:rabbitmq}
-  cloud.stream.bindings.input.destination: ${RABBIT_OUTPUT_DESTINATION:newEpicGamesOffers}
+  cloud.stream.bindings.input.destination: ${RABBIT_OUTPUT_DESTINATION:discordDeputy}
 
-discorddeputy.epicgames.api.host: ${API_EPIC_GAMES_HOST:http://localhost:8082}
+discorddeputy.api.host:
+  epicgames: ${API_HOST_EPIC_GAMES:http://localhost:8082}
+  steam: ${API_HOST_STEAM:http://localhost:8084}

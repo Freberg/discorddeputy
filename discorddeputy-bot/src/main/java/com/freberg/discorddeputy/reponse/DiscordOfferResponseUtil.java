@@ -13,11 +13,11 @@ import com.freberg.discorddeputy.message.epic.EpicGamesTotalPrice;
 import discord4j.core.spec.EmbedCreateSpec;
 import discord4j.rest.util.Color;
 
-public class DiscordResponseUtil {
+public class DiscordOfferResponseUtil {
 
     private static final String EPIC_GAMES_URL = "https://www.epicgames.com/store/en-US/free-games";
 
-    private DiscordResponseUtil() {
+    private DiscordOfferResponseUtil() {
     }
 
     public static void createEpicGamesOfferMessage(EpicGamesOffer offer, EmbedCreateSpec embedCreateSpec,
@@ -54,9 +54,9 @@ public class DiscordResponseUtil {
         return Optional.of(offer)
                        .map(EpicGamesOffer::getPrice)
                        .map(EpicGamesPrice::getTotalPrice)
-                       .map(totalPrice -> DiscordResponseUtil.getPrice(totalPrice.getOriginalPrice(), totalPrice)
+                       .map(totalPrice -> DiscordOfferResponseUtil.getPrice(totalPrice.getOriginalPrice(), totalPrice)
                                           + " -> " +
-                                          DiscordResponseUtil.getPrice(totalPrice.getDiscountPrice(), totalPrice));
+                                          DiscordOfferResponseUtil.getPrice(totalPrice.getDiscountPrice(), totalPrice));
     }
 
     private static String getPrice(int price, EpicGamesTotalPrice totalPrice) {

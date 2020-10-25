@@ -11,18 +11,21 @@ import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 import java.util.*
 
 private const val STEAM_GAMES_HOST = "http://api.steampowered.com"
-private const val STEAM_GAMES_URI = "/ISteamNews/GetNewsForApp/v0002/?appid=594650,440&count=3&maxlength=300&format=json"
+private const val STEAM_GAMES_URI = "/ISteamNews/GetNewsForApp/v0002/?appid=APP_ID,440&count=3&maxlength=300&format=json"
 
 @Component
 class StreamNewsFetcher(@Value("\${steam.pollFrequency.duration:30}")
                         private val pollFrequencyDuration: Long,
                         @Value("\${steam.pollFrequency.timeUnit:MINUTES}")
-                        private val timeUnit: ChronoUnit) {
+                        private val timeUnit: ChronoUnit,
+                        @Value("\${steam.apps:594650}")
+                        private val appIds: List<String>) {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
     private val webClient = WebClient.create(STEAM_GAMES_HOST)
@@ -33,16 +36,23 @@ class StreamNewsFetcher(@Value("\${steam.pollFrequency.duration:30}")
         objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
     }
 
-    fun fetchNews(): Flux<SteamNews> = Flux.interval(Duration.ZERO, Duration.of(pollFrequencyDuration, timeUnit))
-            .flatMap {
-                webClient.get()
-                        .uri(STEAM_GAMES_URI)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .exchange()
-            }
-            .flatMap { it.bodyToMono(String::class.java) }
-            .map { deserialize(it) }
-            .flatMap { Flux.fromIterable(it) }
+    fun fetchNews(): Flux<SteamNews> =
+            Flux.interval(Duration.ZERO, Duration.of(pollFrequencyDuration, timeUnit))
+                    .flatMap {
+                        Flux.fromIterable(appIds)
+                                .flatMap { fetchNews(it) }
+                    }
+
+    fun fetchNews(appId: String): Flux<SteamNews> =
+            webClient.get()
+                    .uri(getUri(appId))
+                    .accept(MediaType.APPLICATION_JSON)
+                    .exchange()
+                    .flatMap { it.bodyToMono(String::class.java) }
+                    .map { deserialize(it) }
+                    .flatMapMany { Flux.fromIterable(it) }
+
+    private fun getUri(appId: String): String = STEAM_GAMES_URI.replace("APP_ID", appId)
 
     private fun deserialize(json: String) =
             try {

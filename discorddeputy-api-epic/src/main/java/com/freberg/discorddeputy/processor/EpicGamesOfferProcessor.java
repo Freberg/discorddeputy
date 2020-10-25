@@ -1,5 +1,7 @@
 package com.freberg.discorddeputy.processor;
 
+import com.freberg.discorddeputy.constant.DiscordDeputyConstants
+import com.freberg.discorddeputy.message.MessageType
 import com.freberg.discorddeputy.message.epic.EpicGamesOffer;
 import com.freberg.discorddeputy.repository.EpicGamesOfferRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +23,7 @@ public class EpicGamesOfferProcessor {
     private final Source source;
 
     @StreamListener(Sink.INPUT)
-    public void onNewEpicGamesOffers(EpicGamesOffer offer) {
+    public void onEpicGamesOffer(EpicGamesOffer offer) {
         repository.existsById(offer.getId())
                   .flatMap(idExists -> {
                       if (Boolean.TRUE.equals(idExists)) {
@@ -42,6 +44,7 @@ public class EpicGamesOfferProcessor {
     private Mono<EpicGamesOffer> dispatch(EpicGamesOffer offer) {
         return Mono.fromCallable(() -> {
             source.output().send(MessageBuilder.withPayload(offer)
+                                               .setHeader(DiscordDeputyConstants.MESSAGE_HEADER_MESSAGE_TYPE, MessageType.EPIC_GAMES_OFFER)
                                                .build());
             log.info("Put new offer with ID \"{}\" to queue", offer.getId());
             return offer;
