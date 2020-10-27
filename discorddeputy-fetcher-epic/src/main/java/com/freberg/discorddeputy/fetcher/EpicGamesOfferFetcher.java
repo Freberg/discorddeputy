@@ -40,13 +40,22 @@ public class EpicGamesOfferFetcher {
 
     public Flux<EpicGamesOffer> fetchOffers() {
         return Flux.interval(Duration.ZERO, Duration.of(pollFrequencyDuration, timeUnit))
-                   .flatMap(timestamp -> webClient.get()
-                                                  .uri(EPIC_GAMES_URI)
-                                                  .accept(MediaType.APPLICATION_JSON)
-                                                  .exchange())
-                   .flatMap(response -> response.bodyToMono(String.class))
-                   .map(this::deserialize)
-                   .flatMap(Flux::fromIterable);
+                   .flatMap(timestamp -> retrieveOffers());
+    }
+
+    private Flux<EpicGamesOffer> retrieveOffers() {
+        try {
+            return webClient.get()
+                            .uri(EPIC_GAMES_URI)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .exchange()
+                            .flatMap(response -> response.bodyToMono(String.class))
+                            .map(this::deserialize)
+                            .flatMapMany(Flux::fromIterable);
+        } catch (Exception e) {
+            log.error("Failed to retrieve epic games offers", e);
+            return Flux.empty();
+        }
     }
 
     private List<EpicGamesOffer> deserialize(String json) {

@@ -11,7 +11,6 @@ import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Flux
-import reactor.core.publisher.Mono
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 import java.util.*
@@ -40,17 +39,22 @@ class StreamNewsFetcher(@Value("\${steam.pollFrequency.duration:30}")
             Flux.interval(Duration.ZERO, Duration.of(pollFrequencyDuration, timeUnit))
                     .flatMap {
                         Flux.fromIterable(appIds)
-                                .flatMap { fetchNews(it) }
+                                .flatMap { retrieveNews(it) }
                     }
 
-    fun fetchNews(appId: String): Flux<SteamNews> =
-            webClient.get()
-                    .uri(getUri(appId))
-                    .accept(MediaType.APPLICATION_JSON)
-                    .exchange()
-                    .flatMap { it.bodyToMono(String::class.java) }
-                    .map { deserialize(it) }
-                    .flatMapMany { Flux.fromIterable(it) }
+    fun retrieveNews(appId: String): Flux<SteamNews> =
+            try {
+                webClient.get()
+                        .uri(getUri(appId))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .exchange()
+                        .flatMap { it.bodyToMono(String::class.java) }
+                        .map { deserialize(it) }
+                        .flatMapMany { Flux.fromIterable(it) }
+            } catch (e: Exception) {
+                log.error("Failed to retrieve steam news", e)
+                Flux.empty()
+            }
 
     private fun getUri(appId: String): String = STEAM_GAMES_URI.replace("APP_ID", appId)
 
