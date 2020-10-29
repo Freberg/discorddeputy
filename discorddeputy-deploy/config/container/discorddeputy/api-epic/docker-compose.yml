@@ -8,6 +8,7 @@ services:
       MONGO_HOST: mongo
     ports:
       - "9082:8082"
+      - "7082:7082"
     networks:
       - "proxy-net"
       - "db-net"

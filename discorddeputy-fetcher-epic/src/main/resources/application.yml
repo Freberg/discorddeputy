@@ -1,4 +1,5 @@
 server.port: 8081
+management.port: 7081
 spring:
   rabbitmq:
     host: ${RABBIT_HOST:localhost}

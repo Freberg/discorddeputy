@@ -11,6 +11,7 @@ services:
 
     ports:
       - "9083:8083"
+      - "7083:7083"
     networks:
       - "proxy-net"
 
