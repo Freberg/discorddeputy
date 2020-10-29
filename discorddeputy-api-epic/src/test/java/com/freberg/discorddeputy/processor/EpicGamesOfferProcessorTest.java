@@ -72,8 +72,6 @@ class EpicGamesOfferProcessorTest {
 
         Mockito.when(channel.send(Mockito.any()))
                .thenAnswer(invocation -> {
-                   EpicGamesOffer offer = ((Message<EpicGamesOffer>) invocation.getArguments()[0])
-                           .getPayload();
                    saveCallCount.incrementAndGet();
                    return true;
                });

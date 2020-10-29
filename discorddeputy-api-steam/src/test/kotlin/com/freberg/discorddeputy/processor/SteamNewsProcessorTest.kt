@@ -66,9 +66,7 @@ class EpicGamesOfferProcessorTest {
                     Mono.just(offer)
                 })
         Mockito.`when`(channel.send(Mockito.any()))
-                .thenAnswer { invocation: InvocationOnMock ->
-                    val offer = (invocation.arguments[0] as Message<*>)
-                            .payload
+                .thenAnswer {
                     saveCallCount.incrementAndGet()
                     true
                 }
