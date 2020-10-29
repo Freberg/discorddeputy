@@ -1,8 +1,8 @@
 server.port: 8083
 management:
   endpoints:
-    jmx.exposure.include: *
-    web.exposure.include: *
+    jmx.exposure.include: "*"
+    web.exposure.include: "*"
   server.port: 7083
 spring:
   rabbitmq:
