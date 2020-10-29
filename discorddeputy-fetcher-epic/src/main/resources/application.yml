@@ -1,5 +1,9 @@
 server.port: 8081
-management.port: 7081
+management:
+  endpoints:
+    jmx.exposure.include: *
+    web.exposure.include: *
+  server.port: 7081
 spring:
   rabbitmq:
     host: ${RABBIT_HOST:localhost}

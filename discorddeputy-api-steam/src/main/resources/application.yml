@@ -1,5 +1,9 @@
 server.port: 8085
-management.port: 7085
+management:
+  endpoints:
+    jmx.exposure.include: *
+    web.exposure.include: *
+  server.port: 7085
 spring:
   data.mongodb:
     authentication-database: admin
