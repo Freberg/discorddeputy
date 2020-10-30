@@ -26,7 +26,7 @@ class EpicGamesOfferSerDeTest {
     }
 
     @Test
-    public void verifySerDe20201018Data() throws IOException {
+    void verifySerDe20201018Data() throws IOException {
         String json = Optional.of(getClass().getClassLoader())
                               .map(loader -> loader.getResource("json/epic/epicGamesOffers-2020-10-18.json"))
                               .map(URL::getFile)

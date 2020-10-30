@@ -11,7 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.cloud.stream.messaging.Source;
-import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import reactor.core.publisher.Mono;
 

@@ -4,7 +4,6 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,7 +15,7 @@ import org.jsoup.Jsoup;
 public class DiscordNewsResponseUtil {
 
     private static final String URL_CDN_STEAM = "https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/clans/";
-    private static final String REGEX_STEAM_IMAGE_LINK = "\\{STEAM_CLAN_IMAGE}.*.png";
+    private static final String REGEX_STEAM_IMAGE_LINK = "\\{STEAM_CLAN_IMAGE}[^\\s-]*.[png|jpg|jpeg]";
 
     private DiscordNewsResponseUtil() {
     }
@@ -33,20 +32,20 @@ public class DiscordNewsResponseUtil {
                 .ifPresent(spec::setImage);
     }
 
-    private static String extractDescription(SteamNews news) {
+    static String extractDescription(SteamNews news) {
         String text = Jsoup.parse(news.getContents()).text();
         text = text.replaceAll(REGEX_STEAM_IMAGE_LINK, "");
         return text.trim();
     }
 
-    private static String extractImageUrl(SteamNews news) {
+    static String extractImageUrl(SteamNews news) {
         return Optional.ofNullable(Jsoup.parse(news.getContents()))
                        .map(document -> document.select("a"))
                        .stream()
                        .flatMap(Collection::stream)
                        .map(element -> element.attr("href"))
                        .filter(Objects::nonNull)
-                       .filter(link -> link.endsWith(".jpg") || link.endsWith(".png"))
+                       .filter(link -> link.endsWith(".png") || link.endsWith(".jpg") || link.endsWith(".jpeg"))
                        .findFirst()
                        .orElseGet(() -> extractSteamImageUrl(news));
     }

@@ -9,7 +9,6 @@ import org.mockito.Mockito
 import org.mockito.invocation.InvocationOnMock
 import org.mockito.stubbing.Answer
 import org.springframework.cloud.stream.messaging.Source
-import org.springframework.messaging.Message
 import org.springframework.messaging.MessageChannel
 import reactor.core.publisher.Mono
 import java.util.concurrent.atomic.AtomicInteger

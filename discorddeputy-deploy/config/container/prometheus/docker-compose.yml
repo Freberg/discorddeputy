@@ -1,0 +1,20 @@
+version: '3.7'
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.22.0
+    volumes:
+      - ./conf/:/etc/prometheus/
+      - prometheus_data:/prometheus
+    ports:
+      - 9090:9090
+    networks:
+      - proxy-net
+
+volumes:
+  prometheus_data: {}
+
+networks:
+  proxy-net:
+    external:
+      name: shared_net
