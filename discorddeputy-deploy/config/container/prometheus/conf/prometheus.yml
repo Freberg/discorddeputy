@@ -13,10 +13,10 @@ scrape_configs:
     metrics_path: /actuator/prometheus
     scrape_interval: 5s
     static_configs:
-      - targets: [ fetcher-epic:7081', fetcher-steam:7084 ]
+      - targets: [ fetcher-epic:7081, fetcher-steam:7084 ]
         labels:
           group: fetcher
-      - targets: [ api-epic:7082', api-steam:7085 ]
+      - targets: [ api-epic:7082, api-steam:7085 ]
         labels:
           group: api
       - targets: [ bot:7083 ]
