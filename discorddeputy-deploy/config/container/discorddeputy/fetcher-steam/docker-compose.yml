@@ -2,16 +2,16 @@ version: '3.7'
 
 services:
   fetcher-steam:
-    image: "discorddeputy/fetcher-steam:latest"
+    image: discorddeputy/fetcher-steam:latest
     environment:
       RABBIT_HOST: rabbit
     ports:
-      - "9084:8084"
-      - "7084:7084"
+      - 9084:8084
+      - 7084:7084
     networks:
-      - "proxy-net"
+      - proxy-net
 
 networks:
   proxy-net:
     external:
-      name: "shared_net"
+      name: shared_net

@@ -2,21 +2,21 @@ version: '3.7'
 
 services:
   api-steam:
-    image: "discorddeputy/api-steam:latest"
+    image: discorddeputy/api-steam:latest
     environment:
-      RABBIT_HOST: "rabbit"
+      RABBIT_HOST: rabbit
       MONGO_HOST: mongo
     ports:
-      - "9085:8085"
-      - "7085:7085"
+      - 9085:8085
+      - 7085:7085
     networks:
-      - "proxy-net"
-      - "db-net"
+      - proxy-net
+      - db-net
 
 networks:
   proxy-net:
     external:
-      name: "shared_net"
+      name: shared_net
   db-net:
     external:
-      name: "mongo_shared_net"
+      name: mongo_shared_net

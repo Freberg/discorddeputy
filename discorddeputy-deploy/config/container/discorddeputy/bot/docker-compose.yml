@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   bot:
-    image: "discorddeputy/bot:latest"
+    image: discorddeputy/bot:latest
     environment:
       RABBIT_HOST: rabbit
       DISCORD_TOKEN: ${DISCORD_TOKEN}
@@ -10,12 +10,12 @@ services:
       API_HOST_STEAM: http://api-steam:8085
 
     ports:
-      - "9083:8083"
-      - "7083:7083"
+      - 9083:8083
+      - 7083:7083
     networks:
-      - "proxy-net"
+      - proxy-net
 
 networks:
   proxy-net:
     external:
-      name: "shared_net"
+      name: shared_net
