@@ -6,4 +6,6 @@ include 'discorddeputy-fetcher-epic'
 include 'discorddeputy-fetcher-steam'
 include 'discorddeputy-deploy'
 include 'discorddeputy-common'
+include 'discorddeputy-api-epic-client'
+include 'discorddeputy-api-steam-client'
 

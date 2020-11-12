@@ -29,7 +29,7 @@ public class EpicGamesOfferPublisher implements ApplicationRunner {
                .flatMap(offer -> Mono.fromCallable(() -> {
                    source.output().send(MessageBuilder.withPayload(offer)
                                                       .setHeader(DiscordDeputyConstants.MESSAGE_HEADER_MESSAGE_TYPE,
-                                                              MessageType.EPIC_GAMES_OFFER)
+                                                              MessageType.OFFER)
                                                       .build());
                    log.info("Put offer with ID \"{}\" to queue", offer.getId());
                    return offer;

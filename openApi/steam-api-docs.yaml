@@ -1,0 +1,79 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8085/
+    description: Generated server url
+paths:
+  /api/stream/latestNews:
+    get:
+      tags:
+        - steam-news-controller
+      operationId: getLatest
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/News'
+components:
+  schemas:
+    ImageUrl:
+      type: object
+      properties:
+        url:
+          type: string
+        description:
+          type: string
+      description: A collection of various images relating to the news
+    News:
+      required:
+        - content
+        - id
+        - imageUrls
+        - messageType
+        - processTimestamp
+        - source
+        - sourceTimestamp
+        - title
+        - url
+      type: object
+      properties:
+        messageType:
+          type: string
+          description: The type of message
+          enum:
+            - OFFER
+            - NEWS
+        sourceTimestamp:
+          type: string
+          description: The source timestamp of the message
+          format: date-time
+        processTimestamp:
+          type: string
+          description: The process timestamp of the message
+          format: date-time
+        source:
+          type: string
+          description: The source of the message
+        id:
+          type: string
+          description: The unique identifier for the message
+        title:
+          type: string
+          description: The news title
+        content:
+          type: string
+          description: The news content
+        url:
+          type: string
+          description: A URL pointing to where the news can be found
+        imageUrls:
+          type: array
+          description: A collection of various images relating to the news
+          items:
+            $ref: '#/components/schemas/ImageUrl'

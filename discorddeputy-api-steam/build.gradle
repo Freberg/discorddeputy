@@ -15,7 +15,8 @@ compileTestKotlin {
 dependencies {
     implementation project(":discorddeputy-common")
 
-    implementation group: 'io.projectreactor.tools', name: 'blockhound', version: '1.0.4.RELEASE'
+    implementation 'io.projectreactor.tools:blockhound:1.0.4.RELEASE'
+    implementation "org.springdoc:springdoc-openapi-webflux-ui:${springDocVersion}"
 
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
@@ -24,6 +25,7 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'io.micrometer:micrometer-registry-prometheus'
+    implementation 'org.jsoup:jsoup:1.13.1'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

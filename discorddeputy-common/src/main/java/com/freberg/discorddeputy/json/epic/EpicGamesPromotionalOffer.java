@@ -1,4 +1,4 @@
-package com.freberg.discorddeputy.message.epic;
+package com.freberg.discorddeputy.json.epic;
 
 import java.time.Instant;
 

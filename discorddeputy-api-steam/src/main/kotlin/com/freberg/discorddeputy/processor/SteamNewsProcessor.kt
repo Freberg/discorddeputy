@@ -1,9 +1,10 @@
 package com.freberg.discorddeputy.processor
 
 import com.freberg.discorddeputy.constant.DiscordDeputyConstants
+import com.freberg.discorddeputy.json.steam.SteamNews
 import com.freberg.discorddeputy.message.MessageType
-import com.freberg.discorddeputy.message.steam.SteamNews
-import com.freberg.discorddeputy.repository.StreamNewsRepository
+import com.freberg.discorddeputy.message.News
+import com.freberg.discorddeputy.repository.NewsRepository
 import org.slf4j.LoggerFactory
 import org.springframework.cloud.stream.annotation.EnableBinding
 import org.springframework.cloud.stream.annotation.StreamListener
@@ -14,12 +15,13 @@ import reactor.core.publisher.Mono
 import reactor.core.scheduler.Schedulers
 
 @EnableBinding(Sink::class, Source::class)
-class SteamNewsProcessor(val repository: StreamNewsRepository, val source: Source) {
+class SteamNewsProcessor(val newsMapper: SteamNewsMapper, val repository: NewsRepository, val source: Source) {
 
     private val log = LoggerFactory.getLogger(javaClass)
 
     @StreamListener(Sink.INPUT)
-    fun onSteamNews(news: SteamNews) {
+    fun onSteamNews(input: SteamNews) {
+        val news = newsMapper.mapMessage(input)
         repository.existsById(news.id)
                 .flatMap {
                     if (it) {
@@ -31,15 +33,15 @@ class SteamNewsProcessor(val repository: StreamNewsRepository, val source: Sourc
                 }.subscribe()
     }
 
-    private fun persist(news: SteamNews): Mono<SteamNews> {
+    private fun persist(news: News): Mono<News> {
         log.info("Persisted new news with GID \"{}\" to DB", news.id)
         return repository.save(news)
     }
 
-    private fun dispatch(news: SteamNews): Mono<SteamNews> {
+    private fun dispatch(news: News): Mono<News> {
         return Mono.fromCallable {
             source.output().send(MessageBuilder.withPayload(news)
-                    .setHeader(DiscordDeputyConstants.MESSAGE_HEADER_MESSAGE_TYPE, MessageType.STEAM_NEWS)
+                    .setHeader(DiscordDeputyConstants.MESSAGE_HEADER_MESSAGE_TYPE, MessageType.NEWS)
                     .build())
             log.info("Put new news with GID \"{}\" to queue", news.id)
             news

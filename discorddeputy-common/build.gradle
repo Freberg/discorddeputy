@@ -1,5 +1,7 @@
 dependencies {
-    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind'
+    implementation 'io.swagger.core.v3:swagger-annotations:2.1.4'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
     def immutablesVersion = "2.8.8"
     annotationProcessor "org.immutables:value:$immutablesVersion"
@@ -13,4 +15,5 @@ dependencyManagement {
     imports {
         mavenBom "org.springframework.boot:spring-boot-dependencies:${springVersion}"
     }
+
 }

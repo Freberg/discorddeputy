@@ -25,9 +25,9 @@ class StreamNewsPublisher(val fetcher: StreamNewsFetcher, val source: Source) : 
                 .flatMap {
                     Mono.fromCallable {
                         source.output().send(MessageBuilder.withPayload(it)
-                                .setHeader(DiscordDeputyConstants.MESSAGE_HEADER_MESSAGE_TYPE, MessageType.STEAM_NEWS)
+                                .setHeader(DiscordDeputyConstants.MESSAGE_HEADER_MESSAGE_TYPE, MessageType.NEWS)
                                 .build())
-                        log.info("Put news with GID \"{}\" to queue", it.id)
+                        log.info("Put news with GID \"{}\" to queue", it.gid)
                         it
                     }
                 }

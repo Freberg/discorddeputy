@@ -4,10 +4,14 @@ public class DiscordDeputyConstants {
     private DiscordDeputyConstants() {
     }
 
-    public static final String SYSTEM_PROPERTY_BLOCK_HOUND_ENABLED = "blockHoundEnabled";
 
     public static final String IMAGE_TYPE_OFFERING_WIDE = "OfferImageWide";
     public static final String IMAGE_TYPE_THUMBNAIL = "Thumbnail";
 
     public static final String MESSAGE_HEADER_MESSAGE_TYPE = "MESSAGE_TYPE";
+
+    public static final String SOURCE_STEAM = "Steam";
+    public static final String SOURCE_EPIC_GAMES = "Epic Games";
+
+    public static final String SYSTEM_PROPERTY_BLOCK_HOUND_ENABLED = "blockHoundEnabled";
 }

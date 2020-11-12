@@ -8,7 +8,7 @@ import java.util.Optional;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.freberg.discorddeputy.message.epic.EpicGamesOffer;
+import com.freberg.discorddeputy.message.Offer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -33,15 +33,15 @@ public class EpicGamesOfferClient {
         webClient = WebClient.create(apiHost);
     }
 
-    public Mono<List<EpicGamesOffer>> getCurrentOffers() {
+    public Mono<List<Offer>> getCurrentOffers() {
         return getCurrentOffers(API_END_POINT_CURRENT);
     }
 
-    public Mono<List<EpicGamesOffer>> getUpcomingOffers() {
+    public Mono<List<Offer>> getUpcomingOffers() {
         return getCurrentOffers(API_END_POINT_UPCOMING);
     }
 
-    private Mono<List<EpicGamesOffer>> getCurrentOffers(String endPoint) {
+    private Mono<List<Offer>> getCurrentOffers(String endPoint) {
         return webClient.get()
                         .uri(endPoint)
                         .accept(MediaType.APPLICATION_JSON)
@@ -50,10 +50,10 @@ public class EpicGamesOfferClient {
                         .map(this::deserialize);
     }
 
-    private List<EpicGamesOffer> deserialize(String json) {
+    private List<Offer> deserialize(String json) {
         try {
-            List<EpicGamesOffer> offers = Optional
-                    .of(objectMapper.readValue(json, new TypeReference<List<EpicGamesOffer>>() {}))
+            List<Offer> offers = Optional
+                    .of(objectMapper.readValue(json, new TypeReference<List<Offer>>() {}))
                     .orElse(Collections.emptyList());
 
             log.info("Fetched {} offers from API", offers.size());

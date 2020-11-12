@@ -1,15 +1,12 @@
 package com.freberg.discorddeputy.reponse;
 
-import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.Optional;
 
 import com.freberg.discorddeputy.constant.DiscordDeputyConstants;
-import com.freberg.discorddeputy.message.epic.EpicGamesImage;
-import com.freberg.discorddeputy.message.epic.EpicGamesOffer;
-import com.freberg.discorddeputy.message.epic.EpicGamesPrice;
-import com.freberg.discorddeputy.message.epic.EpicGamesTotalPrice;
+import com.freberg.discorddeputy.model.ImageUrl;
+import com.freberg.discorddeputy.model.Offer;
 import discord4j.core.spec.EmbedCreateSpec;
 import discord4j.rest.util.Color;
 
@@ -20,8 +17,8 @@ public class DiscordOfferResponseUtil {
     private DiscordOfferResponseUtil() {
     }
 
-    public static void createEpicGamesOfferMessage(EpicGamesOffer offer, EmbedCreateSpec embedCreateSpec,
-                                                   boolean isSmall) {
+    public static void createOfferMessage(Offer offer, EmbedCreateSpec embedCreateSpec,
+                                          boolean isSmall) {
         embedCreateSpec.setTitle("Epic Games - Current Deal!");
         embedCreateSpec.setUrl(EPIC_GAMES_URL);
         embedCreateSpec.setTimestamp(Instant.now());
@@ -38,40 +35,18 @@ public class DiscordOfferResponseUtil {
         embedCreateSpec.addField(offer.getTitle(), generateDescription(offer), false);
     }
 
-    private static String generateDescription(EpicGamesOffer offer) {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        generateDiscountDescription(offer)
-                .ifPresent(discountDescription -> {
-                    stringBuilder.append(discountDescription);
-                    stringBuilder.append("\n");
-                });
-
-        return stringBuilder.toString();
+    private static String generateDescription(Offer offer) {
+        return "From: " + offer.getStartTime() + "\n" +
+               "To: " + offer.getEndTime();
     }
 
-    private static Optional<String> generateDiscountDescription(EpicGamesOffer offer) {
+    private static Optional<String> resolveImageUrl(Offer offer, String type) {
         return Optional.of(offer)
-                       .map(EpicGamesOffer::getPrice)
-                       .map(EpicGamesPrice::getTotalPrice)
-                       .map(totalPrice -> DiscordOfferResponseUtil.getPrice(totalPrice.getOriginalPrice(), totalPrice)
-                                          + " -> " +
-                                          DiscordOfferResponseUtil.getPrice(totalPrice.getDiscountPrice(), totalPrice));
-    }
-
-    private static String getPrice(int price, EpicGamesTotalPrice totalPrice) {
-        return new DecimalFormat("0.00").format(price / Math.pow(10, totalPrice.getCurrencyInfo()
-                                                                               .getDecimals())) + " " +
-                                                totalPrice.getCurrencyCode();
-    }
-
-    private static Optional<String> resolveImageUrl(EpicGamesOffer offer, String type) {
-        return Optional.of(offer)
-                       .map(EpicGamesOffer::getKeyImages)
+                       .map(Offer::getImageUrls)
                        .stream()
                        .flatMap(Collection::stream)
-                       .filter(image -> type.equals(image.getType()))
+                       .filter(image -> type.equals(image.getDescription()))
                        .findFirst()
-                       .map(EpicGamesImage::getUrl);
+                       .map(ImageUrl::getUrl);
     }
 }

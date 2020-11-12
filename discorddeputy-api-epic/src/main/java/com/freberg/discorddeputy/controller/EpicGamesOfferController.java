@@ -1,16 +1,9 @@
 package com.freberg.discorddeputy.controller;
 
 import java.time.Instant;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
 
-import com.freberg.discorddeputy.message.epic.EpicGamesOffer;
-import com.freberg.discorddeputy.message.epic.EpicGamesPromotionalOffer;
-import com.freberg.discorddeputy.message.epic.EpicGamesPromotionalOffers;
-import com.freberg.discorddeputy.message.epic.EpicGamesPromotions;
-import com.freberg.discorddeputy.repository.EpicGamesOfferRepository;
+import com.freberg.discorddeputy.message.Offer;
+import com.freberg.discorddeputy.repository.OfferRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,71 +15,20 @@ import reactor.core.publisher.Flux;
 @RequiredArgsConstructor
 public class EpicGamesOfferController {
 
-    private final EpicGamesOfferRepository repository;
+    private final OfferRepository repository;
 
     @GetMapping("/currentOffers")
-    public Flux<EpicGamesOffer> getCurrentOffers() {
-        return repository.findAll()
-                         .filter(offer -> isAfter(offer, this::getStartDate))
-                         .filter(offer -> isBefore(offer, this::getEndDate));
+    public Flux<Offer> getCurrentOffers() {
+        return repository.findCurrentOffers(Instant.now());
     }
 
     @GetMapping("/upcomingOffers")
-    public Flux<EpicGamesOffer> getUpcomingOffers() {
-        return repository.findAll()
-                         .filter(offer -> isBefore(offer, this::getStartDate));
+    public Flux<Offer> getUpcomingOffers() {
+        return repository.findUpcomingOffers(Instant.now());
     }
 
     @GetMapping("/allOffers")
-    public Flux<EpicGamesOffer> getAllOffers() {
+    public Flux<Offer> getAllOffers() {
         return repository.findAll();
-    }
-
-    private boolean isBefore(EpicGamesOffer offer, Function<EpicGamesOffer, Instant> timeLimitGetter) {
-        return Optional.ofNullable(timeLimitGetter.apply(offer))
-                       .map(limit -> Instant.now().isBefore(limit))
-                       .orElse(false);
-    }
-
-    private boolean isAfter(EpicGamesOffer offer, Function<EpicGamesOffer, Instant> timeLimitGetter) {
-        return Optional.ofNullable(timeLimitGetter.apply(offer))
-                       .map(limit -> Instant.now().isAfter(limit))
-                       .orElse(false);
-    }
-
-    private Instant getStartDate(EpicGamesOffer epicGamesOffer) {
-        return Optional.ofNullable(getCurrentTimeLimit(epicGamesOffer, EpicGamesPromotionalOffer::getStartDate))
-                       .orElse(getUpcomingTimeLimit(epicGamesOffer, EpicGamesPromotionalOffer::getStartDate));
-    }
-
-    private Instant getEndDate(EpicGamesOffer epicGamesOffer) {
-        return Optional.ofNullable(getCurrentTimeLimit(epicGamesOffer, EpicGamesPromotionalOffer::getEndDate))
-                       .orElse(getUpcomingTimeLimit(epicGamesOffer, EpicGamesPromotionalOffer::getEndDate));
-    }
-
-    private Instant getCurrentTimeLimit(EpicGamesOffer epicGamesOffer,
-                                        Function<EpicGamesPromotionalOffer, Instant> timeLimitGetter) {
-        return getTimeLimit(epicGamesOffer, timeLimitGetter, EpicGamesPromotions::getPromotionalOffers);
-    }
-
-    private Instant getUpcomingTimeLimit(EpicGamesOffer epicGamesOffer,
-                                         Function<EpicGamesPromotionalOffer, Instant> timeLimitGetter) {
-        return getTimeLimit(epicGamesOffer, timeLimitGetter,
-                EpicGamesPromotions::getUpcomingPromotionalOffers);
-    }
-
-    private Instant getTimeLimit(EpicGamesOffer epicGamesOffer,
-                                 Function<EpicGamesPromotionalOffer, Instant> timeLimitGetter,
-                                 Function<EpicGamesPromotions, List<EpicGamesPromotionalOffers>> offerGetter) {
-        return Optional.ofNullable(epicGamesOffer)
-                       .map(EpicGamesOffer::getPromotions)
-                       .map(offerGetter)
-                       .stream()
-                       .flatMap(Collection::stream)
-                       .map(EpicGamesPromotionalOffers::getPromotionalOffers)
-                       .flatMap(Collection::stream)
-                       .map(timeLimitGetter)
-                       .findFirst()
-                       .orElse(null);
     }
 }
