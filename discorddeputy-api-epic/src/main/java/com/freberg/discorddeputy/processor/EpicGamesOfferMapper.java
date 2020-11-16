@@ -24,6 +24,8 @@ public class EpicGamesOfferMapper implements MessageMapper<EpicGamesOffer, Offer
 
     private static final String EPIC_GAMES_URL = "https://www.epicgames.com/store/en-US/free-games";
 
+    private enum OfferStatus {CURRENT, UPCOMING, UNKNOWN}
+
     @Override
     public Offer mapMessage(EpicGamesOffer inputMessage) {
         return ImmutableOffer.builder()
@@ -31,7 +33,7 @@ public class EpicGamesOfferMapper implements MessageMapper<EpicGamesOffer, Offer
                              .processTimestamp(Instant.now())
                              .source(DiscordDeputyConstants.SOURCE_EPIC_GAMES)
                              .title(inputMessage.getTitle())
-                             .id(inputMessage.getId())
+                             .id(getId(inputMessage))
                              .description(inputMessage.getDescription())
                              .url(EPIC_GAMES_URL)
                              .startTime(getStartDate(inputMessage))
@@ -47,6 +49,21 @@ public class EpicGamesOfferMapper implements MessageMapper<EpicGamesOffer, Offer
                                                           .description(image.getType())
                                                           .build())
                            .collect(Collectors.toList());
+    }
+
+    private String getId(EpicGamesOffer epicGamesOffer) {
+        return epicGamesOffer.getId() + "-" + getOfferStatus(epicGamesOffer);
+    }
+
+    private OfferStatus getOfferStatus(EpicGamesOffer epicGamesOffer) {
+        Instant startTime = getStartDate(epicGamesOffer);
+        if (startTime == null) {
+            return OfferStatus.UNKNOWN;
+        } else if (Instant.now().isBefore(getStartDate(epicGamesOffer))) {
+            return OfferStatus.UPCOMING;
+        } else {
+            return OfferStatus.CURRENT;
+        }
     }
 
     private Instant getStartDate(EpicGamesOffer epicGamesOffer) {

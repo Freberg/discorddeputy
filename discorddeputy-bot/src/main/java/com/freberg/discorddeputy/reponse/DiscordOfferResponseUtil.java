@@ -19,7 +19,7 @@ public class DiscordOfferResponseUtil {
 
     public static void createOfferMessage(Offer offer, EmbedCreateSpec embedCreateSpec,
                                           boolean isSmall) {
-        embedCreateSpec.setTitle("Epic Games - Current Deal!");
+        embedCreateSpec.setTitle(createTitle(offer));
         embedCreateSpec.setUrl(EPIC_GAMES_URL);
         embedCreateSpec.setTimestamp(Instant.now());
         embedCreateSpec.setColor(Color.BLACK);
@@ -32,10 +32,18 @@ public class DiscordOfferResponseUtil {
                     .ifPresent(embedCreateSpec::setImage);
         }
 
-        embedCreateSpec.addField(offer.getTitle(), generateDescription(offer), false);
+        embedCreateSpec.addField(offer.getTitle(), createDescription(offer), false);
     }
 
-    private static String generateDescription(Offer offer) {
+    private static String createTitle(Offer offer) {
+        if (Instant.now().isBefore(offer.getStartTime().toInstant())) {
+            return "Epic Games - Upcoming Offer!";
+        } else {
+            return "Epic Games - Current Offer!";
+        }
+    }
+
+    private static String createDescription(Offer offer) {
         return "From: " + offer.getStartTime() + "\n" +
                "To: " + offer.getEndTime();
     }
