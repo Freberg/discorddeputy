@@ -1,6 +1,5 @@
 package com.freberg.discorddeputy.fetcher
 
-import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -64,7 +63,7 @@ class StreamNewsFetcher(@Value("\${steam.pollFrequency.duration:30}")
                         .map { it.appNews }
                         .map { it.newsItems }
                         .orElse(Collections.emptyList())
-            } catch (e: JsonProcessingException) {
+            } catch (e: Exception) {
                 log.error("Failed to deserialize message {}", json, e)
                 Collections.emptyList()
             }

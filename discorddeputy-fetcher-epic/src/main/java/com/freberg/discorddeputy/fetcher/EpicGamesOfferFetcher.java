@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.freberg.discorddeputy.json.epic.EpicGamesOffer;
@@ -70,7 +69,7 @@ public class EpicGamesOfferFetcher {
             log.info("Fetched {} offers from epic games", offers.size());
 
             return offers;
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             log.error("Failed to deserialize message {}", json, e);
             return Collections.emptyList();
         }
