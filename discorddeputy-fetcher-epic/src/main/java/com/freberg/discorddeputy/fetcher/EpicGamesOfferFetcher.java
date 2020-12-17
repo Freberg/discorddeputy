@@ -24,7 +24,7 @@ public class EpicGamesOfferFetcher {
     private static final String EPIC_GAMES_HOST = "https://store-site-backend-static.ak.epicgames.com";
     private static final String EPIC_GAMES_URI = "/freeGamesPromotions";
 
-    private final WebClient webClient = WebClient.create(EPIC_GAMES_HOST);
+    private final WebClient webClient = WebClient.create();
     private final ObjectMapper objectMapper;
 
     @Value("${epicGames.pollFrequency.duration:30}")
@@ -45,7 +45,7 @@ public class EpicGamesOfferFetcher {
     private Flux<EpicGamesOffer> retrieveOffers() {
         try {
             return webClient.get()
-                            .uri(EPIC_GAMES_URI)
+                            .uri(EPIC_GAMES_HOST + EPIC_GAMES_URI)
                             .accept(MediaType.APPLICATION_JSON)
                             .exchange()
                             .flatMap(response -> response.bodyToMono(String.class))

@@ -2,7 +2,10 @@ package com.freberg.discorddeputy.reponse;
 
 import java.time.Instant;
 import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 
 import com.freberg.discorddeputy.constant.DiscordDeputyConstants;
 import com.freberg.discorddeputy.model.ImageUrl;
@@ -28,7 +31,10 @@ public class DiscordOfferResponseUtil {
             resolveImageUrl(offer, DiscordDeputyConstants.IMAGE_TYPE_THUMBNAIL)
                     .ifPresent(embedCreateSpec::setThumbnail);
         } else {
-            resolveImageUrl(offer, DiscordDeputyConstants.IMAGE_TYPE_OFFERING_WIDE)
+            resolveImageUrl(offer,
+                    List.of(DiscordDeputyConstants.IMAGE_TYPE_OFFERING_WIDE,
+                            DiscordDeputyConstants.IMAGE_TYPE_OFFERING_WIDE,
+                            DiscordDeputyConstants.IMAGE_TYPE_VAULT_CLOSED))
                     .ifPresent(embedCreateSpec::setImage);
         }
 
@@ -48,13 +54,23 @@ public class DiscordOfferResponseUtil {
                "To: " + offer.getEndTime();
     }
 
-    private static Optional<String> resolveImageUrl(Offer offer, String type) {
-        return Optional.of(offer)
-                       .map(Offer::getImageUrls)
-                       .stream()
-                       .flatMap(Collection::stream)
-                       .filter(image -> type.equals(image.getDescription()))
-                       .findFirst()
-                       .map(ImageUrl::getUrl);
+    private static Optional<String> resolveImageUrl(Offer offer, String acceptedType) {
+        return resolveImageUrl(offer, List.of(acceptedType));
+    }
+
+    private static Optional<String> resolveImageUrl(Offer offer, List<String> acceptedTypes) {
+        return acceptedTypes.stream()
+                            .map(type ->
+                                    Optional.of(offer)
+                                            .map(Offer::getImageUrls)
+                                            .stream()
+                                            .flatMap(Collection::stream)
+                                            .filter(image -> type.equals(image.getDescription()))
+                                            .findFirst()
+                                            .map(ImageUrl::getUrl)
+                            )
+                            .filter(Optional::isPresent)
+                            .findFirst()
+                            .flatMap(Function.identity());
     }
 }
