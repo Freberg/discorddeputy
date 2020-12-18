@@ -33,7 +33,7 @@ public class DiscordOfferResponseUtil {
         } else {
             resolveImageUrl(offer,
                     List.of(DiscordDeputyConstants.IMAGE_TYPE_OFFERING_WIDE,
-                            DiscordDeputyConstants.IMAGE_TYPE_OFFERING_WIDE,
+                            DiscordDeputyConstants.IMAGE_TYPE_DIESEL_STORE_FRONT_WIDE,
                             DiscordDeputyConstants.IMAGE_TYPE_VAULT_CLOSED))
                     .ifPresent(embedCreateSpec::setImage);
         }
