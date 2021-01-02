@@ -1,5 +1,6 @@
 package com.freberg.discorddeputy.json.epic;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -21,5 +22,6 @@ public interface EpicGamesOffer {
 
     List<EpicGamesImage> getKeyImages();
 
+    @Nullable
     EpicGamesPromotions getPromotions();
 }
