@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Slf4j
 @Component
@@ -47,8 +48,12 @@ public class EpicGamesOfferFetcher {
             return webClient.get()
                             .uri(EPIC_GAMES_HOST + EPIC_GAMES_URI)
                             .accept(MediaType.APPLICATION_JSON)
-                            .exchange()
-                            .flatMap(response -> response.bodyToMono(String.class))
+                            .retrieve()
+                            .bodyToMono(String.class)
+                            .onErrorResume(throwable -> {
+                                log.error("Failed to fetch data from epic games", throwable);
+                                return Mono.empty();
+                            })
                             .map(this::deserialize)
                             .flatMapMany(Flux::fromIterable);
         } catch (Exception e) {
