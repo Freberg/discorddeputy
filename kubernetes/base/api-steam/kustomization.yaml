@@ -8,4 +8,4 @@ resources:
 images:
   - name: api-steam
     newName: freberg/discorddeputy-api-steam
-    newTag: master
+    newTag: v0.0.1

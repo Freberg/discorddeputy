@@ -8,4 +8,4 @@ resources:
 images:
   - name: bot
     newName: freberg/discorddeputy-bot
-    newTag: master
+    newTag: v0.0.1

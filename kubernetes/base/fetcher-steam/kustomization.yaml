@@ -8,4 +8,4 @@ resources:
 images:
   - name: fetcher-steam
     newName: freberg/discorddeputy-fetcher-steam
-    newTag: master
+    newTag: v0.0.1
