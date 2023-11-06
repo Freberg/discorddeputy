@@ -17,6 +17,9 @@ spring:
     port: ${RABBIT_PORT:5672}
     username: ${RABBIT_USERNAME:rabbitmq}
     password: ${RABBIT_PASSWORD:rabbitmq}
-  cloud.stream.bindings:
-    input.destination: ${RABBIT_OUTPUT_DESTINATION:steamNews}
-    output.destination: ${RABBIT_OUTPUT_DESTINATION:discordDeputy}
+  cloud.stream:
+    bindings:
+      newsProcessor-in-0:
+        destination: news
+      newsProcessor-out-0:
+        destination: bot-news

@@ -1,50 +1,35 @@
 package com.freberg.discorddeputy.processor
 
-import com.freberg.discorddeputy.constant.DiscordDeputyConstants
 import com.freberg.discorddeputy.json.steam.SteamNews
-import com.freberg.discorddeputy.message.MessageType
 import com.freberg.discorddeputy.message.News
 import com.freberg.discorddeputy.repository.NewsRepository
 import org.slf4j.LoggerFactory
-import org.springframework.cloud.stream.annotation.EnableBinding
-import org.springframework.cloud.stream.annotation.StreamListener
-import org.springframework.cloud.stream.messaging.Sink
-import org.springframework.cloud.stream.messaging.Source
-import org.springframework.integration.support.MessageBuilder
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.stereotype.Component
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
-import reactor.core.scheduler.Schedulers
+import java.util.function.Function
 
-@EnableBinding(Sink::class, Source::class)
-class SteamNewsProcessor(val newsMapper: SteamNewsMapper, val repository: NewsRepository, val source: Source) {
+@Component
+@Configuration
+class SteamNewsProcessor(private val newsMapper: SteamNewsMapper, private val repository: NewsRepository) {
 
     private val log = LoggerFactory.getLogger(javaClass)
 
-    @StreamListener(Sink.INPUT)
-    fun onSteamNews(input: SteamNews) {
-        val news = newsMapper.mapMessage(input)
-        repository.existsById(news.id)
-                .flatMap {
-                    if (it) {
-                        Mono.empty()
-                    } else {
-                        persist(news)
-                                .then(dispatch(news))
-                    }
-                }.subscribe()
+    @Bean
+    fun newsProcessor(): Function<Flux<SteamNews>, Flux<News>> {
+        return Function { steamNews ->
+            steamNews
+                    .mapNotNull { newsMapper.mapMessage(it) }
+                    .map { it!! }
+                    .filterWhen { repository.existsById(it.id).map { b -> !b } }
+                    .flatMap { persist(it) }
+        }
     }
 
     private fun persist(news: News): Mono<News> {
         log.info("Persisted new news with GID \"{}\" to DB", news.id)
         return repository.save(news)
-    }
-
-    private fun dispatch(news: News): Mono<News> {
-        return Mono.fromCallable {
-            source.output().send(MessageBuilder.withPayload(news)
-                    .setHeader(DiscordDeputyConstants.MESSAGE_HEADER_MESSAGE_TYPE, MessageType.NEWS)
-                    .build())
-            log.info("Put new news with GID \"{}\" to queue", news.id)
-            news
-        }.subscribeOn(Schedulers.elastic())
     }
 }

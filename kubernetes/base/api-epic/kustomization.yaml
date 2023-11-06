@@ -1,0 +1,11 @@
+commonLabels:
+  app: api-steam
+
+resources:
+  - deployment.yaml
+  - service.yaml
+
+images:
+  - name: api-epic
+    newName: freberg/discorddeputy-api-epic
+    newTag: master

@@ -1,8 +1,12 @@
 server.port: 8082
+
 management:
   endpoints:
     jmx.exposure.include: "*"
     web.exposure.include: "*"
+  health:
+    rabbit.enabled: true
+    mongo.enabled: true
   server.port: 7082
 spring:
   data.mongodb:
@@ -17,6 +21,9 @@ spring:
     port: ${RABBIT_PORT:5672}
     username: ${RABBIT_USERNAME:rabbitmq}
     password: ${RABBIT_PASSWORD:rabbitmq}
-  cloud.stream.bindings:
-    input.destination: ${RABBIT_OUTPUT_DESTINATION:epicGamesOffers}
-    output.destination: ${RABBIT_OUTPUT_DESTINATION:discordDeputy}
+  cloud.stream:
+    bindings:
+      offerProcessor-in-0:
+        destination: offers
+      offerProcessor-out-0:
+        destination: bot-offers

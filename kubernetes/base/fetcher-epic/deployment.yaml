@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fetcher-epic
+spec:
+  strategy:
+    type: Recreate
+  template:
+    spec:
+      containers:
+        - image: fetcher-epic
+          name: fetcher-epic
+          env:
+            - name: RABBIT_HOST
+              value: rabbitmq
+            - name: RABBIT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: discord-deputy
+                  key: rabbit_user
+            - name: RABBIT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: discord-deputy
+                  key: rabbit_pass
+          ports:
+            - containerPort: 8081
+              name: main
+            - containerPort: 7081
+              name: monitor

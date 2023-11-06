@@ -10,7 +10,10 @@ spring:
     port: ${RABBIT_PORT:5672}
     username: ${RABBIT_USERNAME:rabbitmq}
     password: ${RABBIT_PASSWORD:rabbitmq}
-  cloud.stream.bindings.output.destination: ${RABBIT_OUTPUT_DESTINATION:epicGamesOffers}
+  cloud.stream:
+    bindings:
+      offerSource-out-0:
+        destination: offers
 
 epicGames.pollFrequency:
   duration: 30

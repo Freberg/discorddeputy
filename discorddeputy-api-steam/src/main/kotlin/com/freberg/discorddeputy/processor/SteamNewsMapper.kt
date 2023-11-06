@@ -7,32 +7,37 @@ import com.freberg.discorddeputy.message.ImmutableImageUrl
 import com.freberg.discorddeputy.message.ImmutableNews
 import com.freberg.discorddeputy.message.News
 import org.jsoup.Jsoup
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import java.time.Instant
 import java.util.*
-import java.util.regex.Pattern
 import java.util.stream.Collectors
-import java.util.stream.Stream
-import kotlin.collections.ArrayList
+
+private const val STEAM_CLAN_IMAGE = "{STEAM_CLAN_IMAGE}";
+private const val URL_CDN_STEAM = "https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/clans/"
+private const val REGEX_STEAM_IMAGE_LINK = "\\{STEAM_CLAN_IMAGE}[^\\s-]*.[png|jpg|jpeg]"
 
 @Component
-class SteamNewsMapper : MessageMapper<SteamNews, News> {
+class SteamNewsMapper {
 
-    private val STEAM_CLAN_IMAGE = "{STEAM_CLAN_IMAGE}";
-    private val URL_CDN_STEAM = "https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/clans/"
-    private val REGEX_STEAM_IMAGE_LINK = "\\{STEAM_CLAN_IMAGE}[^\\s-]*.[png|jpg|jpeg]"
+    private val log = LoggerFactory.getLogger(javaClass)
 
-    override fun mapMessage(inputMessage: SteamNews): News {
-        return ImmutableNews.builder()
-                .sourceTimestamp(inputMessage.date)
-                .processTimestamp(Instant.now())
-                .source(DiscordDeputyConstants.SOURCE_STEAM)
-                .id(inputMessage.gid)
-                .title(inputMessage.title)
-                .content(extractDescription(inputMessage))
-                .url(inputMessage.url)
-                .imageUrls(extractImageUrls(inputMessage))
-                .build()
+    fun mapMessage(inputMessage: SteamNews): News? {
+        return try {
+            ImmutableNews.builder()
+                    .sourceTimestamp(inputMessage.date)
+                    .processTimestamp(Instant.now())
+                    .source(DiscordDeputyConstants.SOURCE_STEAM)
+                    .id(inputMessage.gid)
+                    .title(inputMessage.title)
+                    .content(extractDescription(inputMessage))
+                    .url(inputMessage.url)
+                    .imageUrls(extractImageUrls(inputMessage))
+                    .build()
+        } catch (e: RuntimeException) {
+            log.error("Failed to map news message \"{}\"", inputMessage, e)
+            null;
+        }
     }
 
     private fun extractDescription(inputMessage: SteamNews): String {

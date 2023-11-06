@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-steam
+spec:
+  strategy:
+    type: Recreate
+  template:
+    spec:
+      containers:
+        - image: api-steam
+          name: api-steam
+          env:
+            - name: API_HOST_EPIC_GAMES
+              value: http://api-epic:8082
+            - name: API_HOST_STEAM
+              value: http://api-steam:8085
+            - name: MONGO_HOST
+              value: mongo
+            - name: MONGO_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: discord-deputy
+                  key: mongo_user
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: discord-deputy
+                  key: mongo_pass
+            - name: RABBIT_HOST
+              value: rabbitmq
+            - name: RABBIT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: discord-deputy
+                  key: rabbit_user
+            - name: RABBIT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: discord-deputy
+                  key: rabbit_pass
+          ports:
+            - containerPort: 8085
+              name: main
+            - containerPort: 7085
+              name: monitor

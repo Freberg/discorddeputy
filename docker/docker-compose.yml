@@ -1,0 +1,119 @@
+version: '3.7'
+
+networks:
+  proxy-net:
+    external:
+      name: shared_net
+
+volumes:
+  mongodb_data_container:
+
+services:
+  rabbit:
+    image: rabbitmq:3.8.9-management
+    environment:
+      RABBITMQ_DEFAULT_USER: rabbitmq
+      RABBITMQ_DEFAULT_PASS: rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    labels:
+      NAME: rabbitmq1
+    networks:
+      - proxy-net
+    healthcheck:
+      test: "rabbitmq-diagnostics -q ping"
+
+  mongo:
+    image: mongo:4.4.1
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongodb
+      MONGO_INITDB_ROOT_PASSWORD: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data_container:/data/db
+    networks:
+      - proxy-net
+
+  bot:
+    image: discorddeputy/bot
+    build: ../discorddeputy-bot
+    environment:
+      RABBIT_HOST: rabbit
+      DISCORD_TOKEN: ${DISCORD_TOKEN}
+      API_HOST_EPIC_GAMES: http://api-epic:8082
+      API_HOST_STEAM: http://api-steam:8085
+    ports:
+      - "9083:8083"
+      - "7083:7083"
+    networks:
+      - proxy-net
+    depends_on:
+      - rabbit
+    healthcheck:
+      test: "curl -f http://localhost:7083/actuator/health | grep 'UP' || exit 1"
+  api-epic:
+    image: discorddeputy/api-epic
+    build: ../discorddeputy-api-epic
+    environment:
+      RABBIT_HOST: rabbit
+      MONGO_HOST: mongo
+    ports:
+      - "9082:8082"
+      - "7082:7082"
+    networks:
+      - proxy-net
+    depends_on:
+      - rabbit
+      - mongo
+      - bot
+    healthcheck:
+      test: "curl -f http://localhost:7082/actuator/health | grep 'UP' || exit 1"
+  api-steam:
+    image: discorddeputy/api-steam
+    build: ../discorddeputy-api-steam
+    environment:
+      RABBIT_HOST: rabbit
+      MONGO_HOST: mongo
+    ports:
+      - "9085:8085"
+      - "7085:7085"
+    networks:
+      - proxy-net
+    depends_on:
+      - rabbit
+      - mongo
+      - bot
+    healthcheck:
+      test: "curl -f http://localhost:7085/actuator/health | grep 'UP' || exit 1"
+  fetcher-epic:
+    image: discorddeputy/fetcher-epic
+    build: ../discorddeputy-fetcher-epic
+    environment:
+      RABBIT_HOST: rabbit
+    ports:
+      - "9081:8081"
+      - "7081:7081"
+    networks:
+      - proxy-net
+    depends_on:
+      - rabbit
+      - api-epic
+    healthcheck:
+      test: "curl -f http://localhost:7081/actuator/health | grep 'UP' || exit 1"
+  fetcher-steam:
+    image: discorddeputy/fetcher-steam
+    build: ../discorddeputy-fetcher-steam
+    environment:
+      RABBIT_HOST: rabbit
+    ports:
+      - "9084:8084"
+      - "7084:7084"
+    networks:
+      - proxy-net
+    depends_on:
+      - rabbit
+      - api-steam
+    healthcheck:
+      test: "curl -f http://localhost:7084/actuator/health | grep 'UP' || exit 1"

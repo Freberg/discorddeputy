@@ -17,15 +17,18 @@ import java.time.temporal.ChronoUnit
 import java.util.*
 
 private const val STEAM_GAMES_HOST = "http://api.steampowered.com"
-private const val STEAM_GAMES_URI = "/ISteamNews/GetNewsForApp/v0002/?appid=APP_ID,440&count=3&maxlength=300&format=json"
+private const val STEAM_GAMES_URI =
+        "/ISteamNews/GetNewsForApp/v0002/?appid=APP_ID,440&count=3&maxlength=300&format=json"
 
 @Component
-class StreamNewsFetcher(@Value("\${steam.pollFrequency.duration:30}")
-                        private val pollFrequencyDuration: Long,
-                        @Value("\${steam.pollFrequency.timeUnit:MINUTES}")
-                        private val timeUnit: ChronoUnit,
-                        @Value("\${steam.apps:594650}")
-                        private val appIds: List<String>) {
+class SteamNewsFetcher(
+        @Value("\${steam.pollFrequency.duration:30}")
+        private val pollFrequencyDuration: Long,
+        @Value("\${steam.pollFrequency.timeUnit:MINUTES}")
+        private val timeUnit: ChronoUnit,
+        @Value("\${steam.apps:594650}")
+        private val appIds: List<String>
+) {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
     private val webClient = WebClient.create(STEAM_GAMES_HOST)

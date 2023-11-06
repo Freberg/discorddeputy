@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bot
+spec:
+  strategy:
+    type: Recreate
+  template:
+    spec:
+      containers:
+        - image: bot
+          name: bot
+          env:
+            - name: API_HOST_EPIC_GAMES
+              value: http://api-epic:8082
+            - name: API_HOST_STEAM
+              value: http://api-steam:8085
+            - name: RABBIT_HOST
+              value: rabbitmq
+            - name: RABBIT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: discord-deputy
+                  key: rabbit_user
+            - name: RABBIT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: discord-deputy
+                  key: rabbit_pass
+            - name: DISCORD_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: discord-deputy
+                  key: discord_token
+          ports:
+            - containerPort: 8083
+              name: main
+            - containerPort: 7083
+              name: monitor

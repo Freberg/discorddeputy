@@ -1,0 +1,4 @@
+namespace: discord-deputy-dev
+
+resources:
+  - ../../base

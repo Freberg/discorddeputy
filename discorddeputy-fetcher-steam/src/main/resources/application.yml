@@ -10,7 +10,10 @@ spring:
     port: ${RABBIT_PORT:5672}
     username: ${RABBIT_USERNAME:rabbitmq}
     password: ${RABBIT_PASSWORD:rabbitmq}
-  cloud.stream.bindings.output.destination: ${RABBIT_OUTPUT_DESTINATION:steamNews}
+  cloud.stream:
+    bindings:
+      newsSource-out-0:
+        destination: news
 
 steam:
   apps: 594650,252950

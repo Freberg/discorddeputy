@@ -1,8 +1,3 @@
-FROM openjdk:15-jdk-buster
-RUN adduser --system --group spring
-USER spring:spring
-ARG DEPENDENCY=build/dependency
-COPY ${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY ${DEPENDENCY}/META-INF /app/META-INF
-COPY ${DEPENDENCY}/BOOT-INF/classes /app
-ENTRYPOINT ["java","-cp","app:app/lib/*","com.freberg.discorddeputy.DiscordDeputyEpicApiApplication"]
+FROM openjdk:17-jdk-buster
+COPY build/libs/* app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]

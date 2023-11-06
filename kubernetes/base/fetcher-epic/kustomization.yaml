@@ -1,0 +1,11 @@
+commonLabels:
+  app: fetcher-epic
+
+resources:
+  - deployment.yaml
+  - service.yaml
+
+images:
+  - name: fetcher-epic
+    newName: freberg/discorddeputy-fetcher-epic
+    newTag: master

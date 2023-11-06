@@ -12,15 +12,19 @@ public class DiscordNewsResponseUtil {
     private DiscordNewsResponseUtil() {
     }
 
-    public static void createNewsMessage(News news, EmbedCreateSpec spec) {
-        spec.setTitle(news.getTitle());
-        spec.setUrl(news.getUrl());
-        spec.setTimestamp(Instant.now());
-        spec.setColor(Color.BLACK);
-        spec.setDescription(news.getContent());
+    public static EmbedCreateSpec createNewsMessage(News news) {
+        var builder = EmbedCreateSpec.builder()
+                .title(news.getTitle())
+                .url(news.getUrl())
+                .timestamp(Instant.now())
+                .color(Color.BLACK)
+                .description(news.getContent());
+
         news.getImageUrls().stream()
-            .findFirst()
-            .map(ImageUrl::getUrl)
-            .ifPresent(spec::setImage);
+                .findFirst()
+                .map(ImageUrl::getUrl)
+                .ifPresent(builder::image);
+
+        return builder.build();
     }
 }

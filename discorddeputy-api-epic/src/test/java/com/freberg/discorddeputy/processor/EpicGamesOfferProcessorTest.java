@@ -1,9 +1,5 @@
 package com.freberg.discorddeputy.processor;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.freberg.discorddeputy.json.epic.EpicGamesOffer;
@@ -13,9 +9,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.cloud.stream.messaging.Source;
-import org.springframework.messaging.MessageChannel;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.HashSet;
+import java.util.concurrent.atomic.AtomicInteger;
 
 class EpicGamesOfferProcessorTest {
 
@@ -24,79 +22,48 @@ class EpicGamesOfferProcessorTest {
 
     private EpicGamesOfferProcessor processor;
     private OfferRepository repository;
-    private MessageChannel channel;
     private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
         repository = Mockito.mock(OfferRepository.class);
-        channel = Mockito.mock(MessageChannel.class);
         objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-        Source source = Mockito.mock(Source.class);
-        Mockito.when(source.output())
-               .thenReturn(channel);
+        processor = new EpicGamesOfferProcessor(new EpicGamesOfferMapper(), repository);
 
-        processor = new EpicGamesOfferProcessor(new EpicGamesOfferMapper(), repository, source);
-
-        Set<String> seemIds = new HashSet<>();
+        var seemIds = new HashSet<>();
         Mockito.when(repository.existsById(Mockito.anyString()))
-               .thenAnswer(invocation -> {
-                   String id = (String) invocation.getArguments()[0];
-                   return Mono.just(!seemIds.add(id));
-               });
+                .thenAnswer(invocation -> {
+                    var id = (String) invocation.getArguments()[0];
+                    return Mono.just(!seemIds.add(id));
+                });
     }
 
     @Test
     void onlyPersistOffersWithNewId() throws Exception {
-        AtomicInteger saveCallCount = new AtomicInteger();
+        var saveCallCount = new AtomicInteger();
         Mockito.when(repository.save(Mockito.any()))
-               .thenAnswer(invocation -> {
-                   Offer offer = (Offer) invocation.getArguments()[0];
-                   saveCallCount.incrementAndGet();
-                   return Mono.just(offer);
-               });
+                .thenAnswer(invocation -> {
+                    Offer offer = (Offer) invocation.getArguments()[0];
+                    saveCallCount.incrementAndGet();
+                    return Mono.just(offer);
+                });
 
-        processor.onEpicGamesOffer(newEpicGamesOffer("1"));
-        processor.onEpicGamesOffer(newEpicGamesOffer("1"));
-        processor.onEpicGamesOffer(newEpicGamesOffer("2"));
-        processor.onEpicGamesOffer(newEpicGamesOffer("1"));
+        var input = Flux.just(
+                newEpicGamesOffer("1"),
+                newEpicGamesOffer("1"),
+                newEpicGamesOffer("2"),
+                newEpicGamesOffer("1")
+        );
 
-        // Wait for asynchronous computations to complete
-        Thread.sleep(200);
-        Assertions.assertEquals(2, saveCallCount.intValue());
-    }
+        processor.offerProcessor().apply(input).blockLast();
 
-    @Test
-    void onlyDispatchOffersWithNewId() throws Exception {
-        AtomicInteger saveCallCount = new AtomicInteger();
-
-        Mockito.when(repository.save(Mockito.any()))
-               .thenAnswer(invocation -> {
-                   Offer offer = (Offer) invocation.getArguments()[0];
-                   return Mono.just(offer);
-               });
-
-        Mockito.when(channel.send(Mockito.any()))
-               .thenAnswer(invocation -> {
-                   saveCallCount.incrementAndGet();
-                   return true;
-               });
-
-        processor.onEpicGamesOffer(newEpicGamesOffer("1"));
-        processor.onEpicGamesOffer(newEpicGamesOffer("1"));
-        processor.onEpicGamesOffer(newEpicGamesOffer("2"));
-        processor.onEpicGamesOffer(newEpicGamesOffer("1"));
-
-        // Wait for asynchronous computations to complete
-        Thread.sleep(200);
         Assertions.assertEquals(2, saveCallCount.intValue());
     }
 
     private EpicGamesOffer newEpicGamesOffer(String id) throws Exception {
-        String json = TEST_OFFER.replace(ID_PLACE_HOLDER, id);
-        EpicGamesOffer offer = objectMapper.readValue(json, EpicGamesOffer.class);
-        return offer;
+        var json = TEST_OFFER.replace(ID_PLACE_HOLDER, id);
+        return objectMapper.readValue(json, EpicGamesOffer.class);
     }
 }

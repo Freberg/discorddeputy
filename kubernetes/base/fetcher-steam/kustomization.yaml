@@ -1,0 +1,11 @@
+commonLabels:
+  app: fetcher-steam
+
+resources:
+  - deployment.yaml
+  - service.yaml
+
+images:
+  - name: fetcher-steam
+    newName: freberg/discorddeputy-fetcher-steam
+    newTag: master

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fetcher-steam
+spec:
+  ports:
+    - port: 8084
+      name: main
+    - port: 7084
+      name: monitor
+  clusterIP: None

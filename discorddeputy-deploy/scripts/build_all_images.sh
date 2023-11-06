@@ -1,5 +1,0 @@
-(cd discorddeputy-fetcher-epic || exit && .././gradlew bootBuildImage --imageName=discorddeputy/fetcher-epic)
-(cd discorddeputy-fetcher-steam || exit && .././gradlew bootBuildImage --imageName=discorddeputy/fetcher-steam)
-(cd discorddeputy-api-epic || exit && .././gradlew bootBuildImage --imageName=discorddeputy/api-epic)
-(cd discorddeputy-api-steam || exit && .././gradlew bootBuildImage --imageName=discorddeputy/api-steam)
-(cd discorddeputy-bot || exit && .././gradlew bootBuildImage --imageName=discorddeputy/bot)

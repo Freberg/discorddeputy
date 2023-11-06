@@ -43,17 +43,18 @@ public class EpicGamesOfferClient {
 
     private Mono<List<Offer>> getCurrentOffers(String endPoint) {
         return webClient.get()
-                        .uri(endPoint)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .exchange()
-                        .flatMap(response -> response.bodyToMono(String.class))
-                        .map(this::deserialize);
+                .uri(endPoint)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(String.class)
+                .map(this::deserialize);
     }
 
     private List<Offer> deserialize(String json) {
         try {
             List<Offer> offers = Optional
-                    .of(objectMapper.readValue(json, new TypeReference<List<Offer>>() {}))
+                    .of(objectMapper.readValue(json, new TypeReference<List<Offer>>() {
+                    }))
                     .orElse(Collections.emptyList());
 
             log.info("Fetched {} offers from API", offers.size());

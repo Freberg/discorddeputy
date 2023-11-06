@@ -1,0 +1,9 @@
+resources:
+  - namespace.yaml
+  - rabbitmq
+  - mongo
+  - bot
+  - api-epic
+  - api-steam
+  - fetcher-epic
+  - fetcher-steam

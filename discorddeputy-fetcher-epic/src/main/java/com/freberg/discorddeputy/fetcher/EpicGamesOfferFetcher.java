@@ -9,6 +9,7 @@ import java.util.Optional;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.freberg.discorddeputy.json.epic.EpicGamesOffer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,28 +35,29 @@ public class EpicGamesOfferFetcher {
     private ChronoUnit timeUnit;
 
     public EpicGamesOfferFetcher() {
-        objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper = JsonMapper.builder()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .build();
     }
 
     public Flux<EpicGamesOffer> fetchOffers() {
         return Flux.interval(Duration.ZERO, Duration.of(pollFrequencyDuration, timeUnit))
-                   .flatMap(timestamp -> retrieveOffers());
+                .flatMap(timestamp -> retrieveOffers());
     }
 
     private Flux<EpicGamesOffer> retrieveOffers() {
         try {
             return webClient.get()
-                            .uri(EPIC_GAMES_HOST + EPIC_GAMES_URI)
-                            .accept(MediaType.APPLICATION_JSON)
-                            .retrieve()
-                            .bodyToMono(String.class)
-                            .onErrorResume(throwable -> {
-                                log.error("Failed to fetch data from epic games", throwable);
-                                return Mono.empty();
-                            })
-                            .map(this::deserialize)
-                            .flatMapMany(Flux::fromIterable);
+                    .uri(EPIC_GAMES_HOST + EPIC_GAMES_URI)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .onErrorResume(throwable -> {
+                        log.error("Failed to fetch data from epic games", throwable);
+                        return Mono.empty();
+                    })
+                    .map(this::deserialize)
+                    .flatMapMany(Flux::fromIterable);
         } catch (Exception e) {
             log.error("Failed to retrieve epic games offers", e);
             return Flux.empty();
@@ -65,11 +67,11 @@ public class EpicGamesOfferFetcher {
     private List<EpicGamesOffer> deserialize(String json) {
         try {
             List<EpicGamesOffer> offers = Optional.of(objectMapper.readValue(json, EpicGamesJsonResponse.class))
-                                                  .map(EpicGamesJsonResponse::getData)
-                                                  .map(EpicGamesData::getCatalog)
-                                                  .map(EpicGameCatalog::getSearchStore)
-                                                  .map(EpicGamesSearchStore::getElements)
-                                                  .orElse(Collections.emptyList());
+                    .map(EpicGamesJsonResponse::getData)
+                    .map(EpicGamesData::getCatalog)
+                    .map(EpicGameCatalog::getSearchStore)
+                    .map(EpicGamesSearchStore::getElements)
+                    .orElse(Collections.emptyList());
 
             log.info("Fetched {} offers from epic games", offers.size());
 

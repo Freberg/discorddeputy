@@ -2,6 +2,10 @@ plugins {
     id 'org.springframework.boot' version "${springVersion}"
 }
 
+jar {
+    enabled = false
+}
+
 dependencies {
     implementation project(":discorddeputy-common")
 

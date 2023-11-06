@@ -1,38 +1,26 @@
 package com.freberg.discorddeputy.publisher
 
-import com.freberg.discorddeputy.constant.DiscordDeputyConstants
-import com.freberg.discorddeputy.fetcher.StreamNewsFetcher
-import com.freberg.discorddeputy.message.MessageType
+import com.freberg.discorddeputy.fetcher.SteamNewsFetcher
+import com.freberg.discorddeputy.json.steam.SteamNews
 import org.slf4j.LoggerFactory
-import org.springframework.boot.ApplicationArguments
-import org.springframework.boot.ApplicationRunner
-import org.springframework.cloud.stream.annotation.EnableBinding
-import org.springframework.cloud.stream.messaging.Source
-import org.springframework.integration.support.MessageBuilder
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 import org.springframework.stereotype.Component
-import reactor.core.publisher.Mono
-import reactor.core.scheduler.Schedulers
+import reactor.core.publisher.Flux
+import java.util.function.Supplier
 
 
 @Component
-@EnableBinding(Source::class)
-class StreamNewsPublisher(val fetcher: StreamNewsFetcher, val source: Source) : ApplicationRunner {
+@Configuration
+class SteamNewsSource(val fetcher: SteamNewsFetcher) {
 
-    private val log = LoggerFactory.getLogger(javaClass);
+    private val log = LoggerFactory.getLogger(javaClass)
 
-    override fun run(args: ApplicationArguments?) {
-        fetcher.fetchNews()
-                .flatMap {
-                    Mono.fromCallable {
-                        source.output().send(MessageBuilder.withPayload(it)
-                                .setHeader(DiscordDeputyConstants.MESSAGE_HEADER_MESSAGE_TYPE, MessageType.NEWS)
-                                .build())
-                        log.info("Put news with GID \"{}\" to queue", it.gid)
-                        it
-                    }
-                }
-                .subscribeOn(Schedulers.boundedElastic())
-                .subscribe()
-    }
+    @Bean
+    fun newsSource(): Supplier<Flux<SteamNews>> =
+            Supplier {
+                fetcher.fetchNews()
+                        .doOnNext { log.info("Put news with GID \"{}\" to queue", it.gid) }
+            }
 }
 
