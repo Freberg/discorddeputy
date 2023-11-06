@@ -5,7 +5,7 @@ on:
     tags:
       - "v*"
 
-name: Build
+name: build
 
 env:
   DOCKER_REGISTRY: docker.io
