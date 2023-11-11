@@ -48,6 +48,10 @@ jobs:
         id: meta-bot
         with:
           images: ${{ env.DOCKER_REGISTRY }}/${{ env.BASE_IMAGE_NAME }}-bot
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
       - name: Build and push bot docker image
         uses: docker/build-push-action@v5
         with:
@@ -62,6 +66,10 @@ jobs:
         id: meta-api-epic
         with:
           images: ${{ env.DOCKER_REGISTRY }}/${{ env.BASE_IMAGE_NAME }}-api-epic
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
       - name: Build and push api-epic docker image
         uses: docker/build-push-action@v5
         with:
@@ -76,6 +84,10 @@ jobs:
         id: meta-api-steam
         with:
           images: ${{ env.DOCKER_REGISTRY }}/${{ env.BASE_IMAGE_NAME }}-api-steam
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
       - name: Build and push apit-steam docker image
         uses: docker/build-push-action@v5
         with:
@@ -90,6 +102,10 @@ jobs:
         id: meta-fetcher-epic
         with:
           images: ${{ env.DOCKER_REGISTRY }}/${{ env.BASE_IMAGE_NAME }}-fetcher-epic
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
       - name: Build and push fetcher-epic docker image
         uses: docker/build-push-action@v5
         with:
@@ -104,6 +120,10 @@ jobs:
         id: meta-fetcher-steam
         with:
           images: ${{ env.DOCKER_REGISTRY }}/${{ env.BASE_IMAGE_NAME }}-fetcher-steam
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
       - name: Build and push fetcher-steam docker image
         uses: docker/build-push-action@v5
         with:
