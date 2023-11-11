@@ -6,4 +6,4 @@ resources:
   - api-epic
   - api-steam
   - fetcher-epic
-  - fetcher-steam
+#  - fetcher-steam
