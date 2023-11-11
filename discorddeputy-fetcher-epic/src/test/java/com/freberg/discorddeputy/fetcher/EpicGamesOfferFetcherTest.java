@@ -1,5 +1,8 @@
 package com.freberg.discorddeputy.fetcher;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.Objects;
 
 import org.junit.jupiter.api.Test;
@@ -18,6 +21,6 @@ class EpicGamesOfferFetcherTest {
         StepVerifier.create(epicGamesOfferFetcher.fetchOffers())
                     .expectNextMatches(Objects::nonNull)
                     .thenCancel()
-                    .verify();
+                    .verify(Duration.of(10, ChronoUnit.SECONDS));
     }
 }

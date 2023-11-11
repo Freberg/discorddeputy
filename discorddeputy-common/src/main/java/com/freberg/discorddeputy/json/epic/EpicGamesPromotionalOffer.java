@@ -9,6 +9,8 @@ import com.freberg.discorddeputy.json.DefaultInstantDeserializer;
 import com.freberg.discorddeputy.json.DefaultInstantSerializer;
 import org.immutables.value.Value;
 
+import javax.annotation.Nullable;
+
 @Value.Immutable
 @JsonSerialize(as = ImmutableEpicGamesPromotionalOffer.class)
 @JsonDeserialize(as = ImmutableEpicGamesPromotionalOffer.class)
@@ -22,6 +24,7 @@ public interface EpicGamesPromotionalOffer {
     @JsonDeserialize(using = DefaultInstantDeserializer.class)
     @JsonSerialize(using = DefaultInstantSerializer.class)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss:SSSz", timezone = "UTC")
+    @Nullable
     Instant getEndDate();
 }
 
