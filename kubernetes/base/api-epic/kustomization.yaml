@@ -8,4 +8,4 @@ resources:
 images:
   - name: api-epic
     newName: freberg/discorddeputy-api-epic
-    newTag: v0.0.1
+    newTag: v0.0.2
