@@ -3,7 +3,6 @@ package com.freberg.discorddeputy.command;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,10 +13,9 @@ public class CommandFactory {
 
     private final Map<String, Command> commands = new HashMap<>();
 
-    @PostConstruct
-    public void init() {
+    public CommandFactory(ListOffersCommand listOffersCommand) {
         register(new HelpCommand(this));
-        register(new ListOffersCommand());
+        register(listOffersCommand);
     }
 
     private void register(Command command) {
