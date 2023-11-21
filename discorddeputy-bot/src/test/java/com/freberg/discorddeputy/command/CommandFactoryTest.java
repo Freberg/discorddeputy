@@ -7,7 +7,7 @@ class CommandFactoryTest {
 
     @Test
     void verifyNoCommandCollision() {
-        CommandFactory commandFactory = new CommandFactory(null);
+        CommandFactory commandFactory = new CommandFactory();
         commandFactory.init();
         Assertions.assertEquals(2, commandFactory.getAllCommands().size());
     }

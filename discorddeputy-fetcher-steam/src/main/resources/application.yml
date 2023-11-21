@@ -13,7 +13,7 @@ spring:
   cloud.stream:
     bindings:
       newsSource-out-0:
-        destination: news
+        destination: source-notifications
 
 steam:
   apps: 594650,252950

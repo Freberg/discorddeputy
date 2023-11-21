@@ -7,19 +7,20 @@ jar {
 }
 
 dependencies {
-    implementation project(":discorddeputy-common")
-
-    implementation group: 'io.projectreactor.tools', name: 'blockhound', version: '1.0.4.RELEASE'
-
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.cloud:spring-cloud-stream'
     implementation 'org.springframework.cloud:spring-cloud-stream-binder-rabbit'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'io.micrometer:micrometer-registry-prometheus'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    def immutablesVersion = "2.10.0"
+    annotationProcessor "org.immutables:value:$immutablesVersion"
+    compileOnly "org.immutables:value:$immutablesVersion"
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'

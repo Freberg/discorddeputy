@@ -1,0 +1,16 @@
+server.port: 8082
+management:
+  endpoints:
+    jmx.exposure.include: "*"
+    web.exposure.include: "*"
+  health:
+    mongo.enabled: true
+  server.port: 7082
+spring:
+  data.mongodb:
+    authentication-database: admin
+    database: discordNotifications
+    host: ${MONGO_HOST:localhost}
+    port: ${MONGO_PORT:27017}
+    username: ${MONGO_USERNAME:mongodb}
+    password: ${MONGO_PASSWORD:mongodb}

@@ -29,7 +29,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Generate client API wrappers
-        run: ./gradlew openApiGenerateEpicClient openApiGenerateSteamClient
+        run: ./gradlew openApiGenerateClient
       - name: Gradle build
         run: ./gradlew build
 
@@ -63,41 +63,41 @@ jobs:
           tags: ${{ steps.meta-bot.outputs.tags }}
           labels: ${{ steps.meta-bot.outputs.labels }}
 
-      - name: Extract api-epic docker image metadata
+      - name: Extract api docker image metadata
         uses: docker/metadata-action@v5
-        id: meta-api-epic
+        id: meta-api
         with:
-          images: ${{ env.DOCKER_REGISTRY }}/${{ env.BASE_IMAGE_NAME }}-api-epic
+          images: ${{ env.DOCKER_REGISTRY }}/${{ env.BASE_IMAGE_NAME }}-api
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
-      - name: Build and push api-epic docker image
+      - name: Build and push api docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./discorddeputy-api-epic
+          context: ./discorddeputy-api
           push: true
           platforms: linux/amd64,linux/arm64/v8
-          tags: ${{ steps.meta-api-epic.outputs.tags }}
-          labels: ${{ steps.meta-api-epic.outputs.labels }}
+          tags: ${{ steps.meta-api.outputs.tags }}
+          labels: ${{ steps.meta-api.outputs.labels }}
 
-      - name: Extract api-steam docker image metadata
+      - name: Extract processor docker image metadata
         uses: docker/metadata-action@v5
-        id: meta-api-steam
+        id: meta-processor
         with:
-          images: ${{ env.DOCKER_REGISTRY }}/${{ env.BASE_IMAGE_NAME }}-api-steam
+          images: ${{ env.DOCKER_REGISTRY }}/${{ env.BASE_IMAGE_NAME }}-processor
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
-      - name: Build and push apit-steam docker image
+      - name: Build and push processor docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./discorddeputy-api-steam
+          context: ./discorddeputy-processor
           push: true
           platforms: linux/amd64,linux/arm64/v8
-          tags: ${{ steps.meta-api-steam.outputs.tags }}
-          labels: ${{ steps.meta-api-steam.outputs.labels }}
+          tags: ${{ steps.meta-processor.outputs.tags }}
+          labels: ${{ steps.meta-processor.outputs.labels }}
 
       - name: Extract fetcher-epic docker image metadata
         uses: docker/metadata-action@v5

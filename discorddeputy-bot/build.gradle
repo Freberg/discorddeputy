@@ -7,17 +7,12 @@ jar {
 }
 
 dependencies {
-    implementation project(":discorddeputy-common")
-    implementation project(":discorddeputy-api-epic-client")
-    implementation project(":discorddeputy-api-steam-client")
+    implementation project(":discorddeputy-api-client")
 
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
-
     implementation 'com.discord4j:discord4j-core:3.2.6'
     implementation 'net.sf.jopt-simple:jopt-simple:5.0.4'
-    implementation 'org.jsoup:jsoup:1.13.1'
 
-    implementation group: 'io.projectreactor.tools', name: 'blockhound', version: '1.0.8.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'org.springframework.cloud:spring-cloud-stream'

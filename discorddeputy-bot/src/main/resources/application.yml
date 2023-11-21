@@ -11,12 +11,10 @@ spring:
     username: ${RABBIT_USERNAME:rabbitmq}
     password: ${RABBIT_PASSWORD:rabbitmq}
   cloud:
-    function.definition: offerSink;newsSink
+    function.definition: sink
     stream.bindings:
-      offerSink-in-0:
-        destination: bot-offers
-      newsSink-in-0:
-        destination: bot-news
+      sink-in-0:
+        destination: bot-notifications
 
 discorddeputy.api.host:
   epicgames: ${API_HOST_EPIC_GAMES:http://localhost:8082}

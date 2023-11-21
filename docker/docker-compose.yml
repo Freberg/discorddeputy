@@ -42,10 +42,9 @@ services:
     environment:
       RABBIT_HOST: rabbit
       DISCORD_TOKEN: ${DISCORD_TOKEN}
-      API_HOST_EPIC_GAMES: http://api-epic:8082
-      API_HOST_STEAM: http://api-steam:8085
+      API_HOST_EPIC_GAMES: http://api:8082
     ports:
-      - "9083:8083"
+      - "8083:8083"
       - "7083:7083"
     networks:
       - proxy-net
@@ -53,31 +52,29 @@ services:
       - rabbit
     healthcheck:
       test: "curl -f http://localhost:7083/actuator/health | grep 'UP' || exit 1"
-  api-epic:
-    image: discorddeputy/api-epic
-    build: ../discorddeputy-api-epic
+  api:
+    image: discorddeputy/api
+    build: ../discorddeputy-api
     environment:
       RABBIT_HOST: rabbit
       MONGO_HOST: mongo
     ports:
-      - "9082:8082"
+      - "8082:8082"
       - "7082:7082"
     networks:
       - proxy-net
     depends_on:
-      - rabbit
       - mongo
-      - bot
     healthcheck:
       test: "curl -f http://localhost:7082/actuator/health | grep 'UP' || exit 1"
-  api-steam:
-    image: discorddeputy/api-steam
-    build: ../discorddeputy-api-steam
+  processor:
+    image: discorddeputy/processor
+    build: ../discorddeputy-processor
     environment:
       RABBIT_HOST: rabbit
       MONGO_HOST: mongo
     ports:
-      - "9085:8085"
+      - "8085:8085"
       - "7085:7085"
     networks:
       - proxy-net
@@ -93,13 +90,13 @@ services:
     environment:
       RABBIT_HOST: rabbit
     ports:
-      - "9081:8081"
+      - "8081:8081"
       - "7081:7081"
     networks:
       - proxy-net
     depends_on:
       - rabbit
-      - api-epic
+      - processor
     healthcheck:
       test: "curl -f http://localhost:7081/actuator/health | grep 'UP' || exit 1"
   fetcher-steam:
@@ -108,12 +105,12 @@ services:
     environment:
       RABBIT_HOST: rabbit
     ports:
-      - "9084:8084"
+      - "8084:8084"
       - "7084:7084"
     networks:
       - proxy-net
     depends_on:
       - rabbit
-      - api-steam
+      - processor
     healthcheck:
       test: "curl -f http://localhost:7084/actuator/health | grep 'UP' || exit 1"

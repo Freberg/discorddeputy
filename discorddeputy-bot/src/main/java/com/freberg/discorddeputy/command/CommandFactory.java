@@ -1,27 +1,23 @@
 package com.freberg.discorddeputy.command;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
 import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.freberg.discorddeputy.api.EpicGamesOfferClient;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-
 @Slf4j
 @Component
-@RequiredArgsConstructor
 public class CommandFactory {
 
     private final Map<String, Command> commands = new HashMap<>();
-    private final EpicGamesOfferClient epicGamesOfferClient;
 
     @PostConstruct
     public void init() {
         register(new HelpCommand(this));
-        register(new ListOffersCommand(epicGamesOfferClient));
+        register(new ListOffersCommand());
     }
 
     private void register(Command command) {

@@ -1,0 +1,83 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8082
+  description: Generated server url
+paths:
+  /upcomingOffers:
+    get:
+      tags:
+      - api-applicatiion
+      operationId: getUpcomingOffers
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DiscordNotification'
+  /latestNews:
+    get:
+      tags:
+      - api-applicatiion
+      operationId: getLatestNews
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DiscordNotification'
+  /currentOffers:
+    get:
+      tags:
+      - api-applicatiion
+      operationId: getCurrentOffers
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DiscordNotification'
+components:
+  schemas:
+    DiscordNotification:
+      required:
+      - description
+      - id
+      - source
+      - timestamp
+      - title
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+        source:
+          type: string
+        type:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        title:
+          type: string
+        descriptionHeader:
+          type: string
+        description:
+          type: string
+        url:
+          type: string
+        imageUrl:
+          type: string
+        thumbnailUrl:
+          type: string

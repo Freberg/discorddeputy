@@ -13,7 +13,7 @@ spring:
   cloud.stream:
     bindings:
       offerSource-out-0:
-        destination: offers
+        destination: source-notifications
 
 epicGames.pollFrequency:
   duration: 30

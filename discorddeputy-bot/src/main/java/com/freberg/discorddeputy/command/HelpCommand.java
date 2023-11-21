@@ -30,19 +30,19 @@ public class HelpCommand implements Command {
     @Override
     public void accept(Message message) {
         message.getChannel()
-               .flatMap(channel -> channel.createMessage(getHelpResponse(message.getContent())))
-               .subscribe();
+                .flatMap(channel -> channel.createMessage(getHelpResponse(message.getContent())))
+                .subscribe();
     }
 
     private String getHelpResponse(String content) {
         return Optional.ofNullable(content)
-                       .map(str -> str.split(" "))
-                       .filter(words -> words.length == 2)
-                       .map(words -> commandFactory.resolveCommandFromString(words[1]))
-                       .map(Command::getDetailedDescription)
-                       .orElse(commandFactory.getAllCommands().stream()
-                                             .sorted(Comparator.comparing(Command::getCommand))
-                                             .map(Command::getShortDescription)
-                                             .collect(Collectors.joining("\n")));
+                .map(str -> str.split(" "))
+                .filter(words -> words.length == 2)
+                .map(words -> commandFactory.resolveCommandFromString(words[1]))
+                .map(Command::getDetailedDescription)
+                .orElse(commandFactory.getAllCommands().stream()
+                        .sorted(Comparator.comparing(Command::getCommand))
+                        .map(Command::getShortDescription)
+                        .collect(Collectors.joining("\n")));
     }
 }
