@@ -1,11 +1,11 @@
 commonLabels:
-  app: bot
+  app: processor
 
 resources:
   - deployment.yaml
   - service.yaml
 
 images:
-  - name: bot
-    newName: freberg/discorddeputy-bot
+  - name: processor
+    newName: freberg/discorddeputy-processor
     newTag: 0.1.0

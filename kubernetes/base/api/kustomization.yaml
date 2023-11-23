@@ -1,0 +1,11 @@
+commonLabels:
+  app: api
+
+resources:
+  - deployment.yaml
+  - service.yaml
+
+images:
+  - name: api
+    newName: freberg/discorddeputy-api
+    newTag: 0.1.0

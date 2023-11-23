@@ -9,12 +9,11 @@ spec:
     spec:
       containers:
         - image: bot
+          imagePullPolicy: Always
           name: bot
           env:
-            - name: API_HOST_EPIC_GAMES
-              value: http://api-epic:8082
-            - name: API_HOST_STEAM
-              value: http://api-steam:8085
+            - name: API_URL
+              value: http://api:8082
             - name: RABBIT_HOST
               value: rabbitmq
             - name: RABBIT_USERNAME

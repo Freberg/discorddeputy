@@ -3,7 +3,7 @@ resources:
   - rabbitmq
   - mongo
   - bot
-  - api-epic
-  - api-steam
+  - api
+  - processor
   - fetcher-epic
 #  - fetcher-steam

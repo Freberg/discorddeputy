@@ -1,20 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-steam
+  name: api
 spec:
   strategy:
     type: Recreate
   template:
     spec:
       containers:
-        - image: api-steam
-          name: api-steam
+        - image: api
+          imagePullPolicy: Always
+          name: api
           env:
-            - name: API_HOST_EPIC_GAMES
-              value: http://api-epic:8082
-            - name: API_HOST_STEAM
-              value: http://api-steam:8085
             - name: MONGO_HOST
               value: mongo
             - name: MONGO_USERNAME
@@ -40,7 +37,7 @@ spec:
                   name: discord-deputy
                   key: rabbit_pass
           ports:
-            - containerPort: 8085
+            - containerPort: 8082
               name: main
-            - containerPort: 7085
+            - containerPort: 7082
               name: monitor
