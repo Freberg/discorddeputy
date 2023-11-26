@@ -50,6 +50,7 @@ task openApiGenerateClient(type: GenerateTask) {
 	modelPackage = "com.freberg.discorddeputy.model"
 	groupId = "com.freberg"
 	id = "discorddeputy-api-client"
+	library = "webclient"
 	version = "$rootProject.version"
 	generateModelTests = false
 	generateApiTests = false

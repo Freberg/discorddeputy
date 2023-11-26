@@ -10,5 +10,5 @@ data class DiscordNotification(
     val description: String,
     val url: String,
     val source: String = "steam",
-    val type: String = "news"
+    val type: String = "NEWS"
 )

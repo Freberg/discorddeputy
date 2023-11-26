@@ -45,23 +45,41 @@ jobs:
           username: ${{ secrets.DOCKER_REPO_USER }}
           password: ${{ secrets.DOCKER_REPO_PASS }}
 
-      - name: Extract bot docker image metadata
+      - name: Extract bot-notifier docker image metadata
         uses: docker/metadata-action@v5
-        id: meta-bot
+        id: meta-bot-notifier
         with:
-          images: ${{ env.DOCKER_REGISTRY }}/${{ env.BASE_IMAGE_NAME }}-bot
+          images: ${{ env.DOCKER_REGISTRY }}/${{ env.BASE_IMAGE_NAME }}-bot-notifier
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
-      - name: Build and push bot docker image
+      - name: Build and push bot-notifier docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./discorddeputy-bot
+          context: ./discorddeputy-bot-notifier
           push: true
           platforms: linux/amd64,linux/arm64/v8
-          tags: ${{ steps.meta-bot.outputs.tags }}
-          labels: ${{ steps.meta-bot.outputs.labels }}
+          tags: ${{ steps.meta-bot-notifier.outputs.tags }}
+          labels: ${{ steps.meta-bot-notifier.outputs.labels }}
+
+      - name: Extract bot-interactive docker image metadata
+        uses: docker/metadata-action@v5
+        id: meta-bot-interactive
+        with:
+          images: ${{ env.DOCKER_REGISTRY }}/${{ env.BASE_IMAGE_NAME }}-bot-interactive
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+      - name: Build and push bot-interactive docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./discorddeputy-bot-interactive
+          push: true
+          platforms: linux/amd64,linux/arm64/v8
+          tags: ${{ steps.meta-bot-interactive.outputs.tags }}
+          labels: ${{ steps.meta-bot-interactive.outputs.labels }}
 
       - name: Extract api docker image metadata
         uses: docker/metadata-action@v5

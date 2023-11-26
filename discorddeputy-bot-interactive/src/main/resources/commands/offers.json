@@ -1,0 +1,22 @@
+{
+  "name": "offers",
+  "description": "lists offers",
+  "options": [
+    {
+      "name": "type",
+      "description": "current or upcoming offers",
+      "type": 3,
+      "required": false,
+      "choices": [
+        {
+          "name": "current",
+          "value": "current"
+        },
+        {
+          "name": "upcoming",
+          "value": "upcoming"
+        }
+      ]
+    }
+  ]
+}

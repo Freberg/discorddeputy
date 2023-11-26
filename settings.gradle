@@ -1,7 +1,11 @@
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.5.0'
+}
 rootProject.name = 'discorddeputy'
 include 'discorddeputy-fetcher-epic'
 include 'discorddeputy-fetcher-steam'
-include 'discorddeputy-bot'
+include 'discorddeputy-bot-notifier'
+include 'discorddeputy-bot-interactive'
 include 'discorddeputy-processor'
 include 'discorddeputy-api'
 include 'discorddeputy-api-client'

@@ -12,6 +12,6 @@ public interface DiscordNotificationRepository extends ReactiveMongoRepository<D
     @Query(value = "{ 'type' : { $eq : 'UPCOMING_OFFER' }, 'startTime' : { $gt :  ?0 } }")
     Flux<DiscordNotification> findUpcomingOffers(String currentTime);
 
-    @Query(value = "{ 'type' : { $eq : 'NEWS' }, 'startTime' : { $gt :  ?0 } }")
+    @Query(value = "{ 'type' : { $eq : 'NEWS' }, 'timestamp' : { $gt :  ?0 } }")
     Flux<DiscordNotification> findLatestNews(String fromTime);
 }

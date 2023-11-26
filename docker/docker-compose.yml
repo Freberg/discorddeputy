@@ -23,7 +23,6 @@ services:
       - proxy-net
     healthcheck:
       test: "rabbitmq-diagnostics -q ping"
-
   mongo:
     image: mongo:4.4.1
     environment:
@@ -36,22 +35,6 @@ services:
     networks:
       - proxy-net
 
-  bot:
-    image: discorddeputy/bot
-    build: ../discorddeputy-bot
-    environment:
-      RABBIT_HOST: rabbit
-      DISCORD_TOKEN: ${DISCORD_TOKEN}
-      API_URL: http://api:8082
-    ports:
-      - "8083:8083"
-      - "7083:7083"
-    networks:
-      - proxy-net
-    depends_on:
-      - rabbit
-    healthcheck:
-      test: "curl -f http://localhost:7083/actuator/health | grep 'UP' || exit 1"
   api:
     image: discorddeputy/api
     build: ../discorddeputy-api
@@ -67,6 +50,32 @@ services:
       - mongo
     healthcheck:
       test: "curl -f http://localhost:7082/actuator/health | grep 'UP' || exit 1"
+  bot-interactive:
+    image: discorddeputy/bot-interactive
+    build: ../discorddeputy-bot-interactive
+    environment:
+      DISCORD_TOKEN: ${DISCORD_TOKEN}
+      API_URL: http://api:8082
+    networks:
+      - proxy-net
+    depends_on:
+      - api
+
+  bot-notifier:
+    image: discorddeputy/bot-notifier
+    build: ../discorddeputy-bot-notifier
+    environment:
+      DISCORD_TOKEN: ${DISCORD_TOKEN}
+      RABBIT_HOST: rabbit
+    ports:
+      - "8083:8083"
+      - "7083:7083"
+    networks:
+      - proxy-net
+    depends_on:
+      - rabbit
+    healthcheck:
+      test: "curl -f http://localhost:7083/actuator/health | grep 'UP' || exit 1"
   processor:
     image: discorddeputy/processor
     build: ../discorddeputy-processor
@@ -81,7 +90,7 @@ services:
     depends_on:
       - rabbit
       - mongo
-      - bot
+      - bot-notifier
     healthcheck:
       test: "curl -f http://localhost:7085/actuator/health | grep 'UP' || exit 1"
   fetcher-epic:
