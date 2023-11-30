@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bot
+  name: bot-notifier
 spec:
   strategy:
     type: Recreate
