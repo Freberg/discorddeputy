@@ -8,12 +8,10 @@ spec:
   template:
     spec:
       containers:
-        - image: bot
+        - image: bot-notifier
           imagePullPolicy: Always
-          name: bot
+          name: bot-notifier
           env:
-            - name: API_URL
-              value: http://api:8082
             - name: RABBIT_HOST
               value: rabbitmq
             - name: RABBIT_USERNAME

@@ -1,0 +1,11 @@
+commonLabels:
+  app: bot-notifier
+
+resources:
+  - deployment.yaml
+  - service.yaml
+
+images:
+  - name: bot-notifier
+    newName: freberg/discorddeputy-bot-notifier
+    newTag: 0.2.0

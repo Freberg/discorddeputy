@@ -2,8 +2,9 @@ resources:
   - namespace.yaml
   - rabbitmq
   - mongo
-  - bot
   - api
+  - bot-interactive
+  - bot-notifier
   - processor
   - fetcher-epic
 #  - fetcher-steam

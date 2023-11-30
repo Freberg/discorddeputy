@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bot-interactive
+spec:
+  strategy:
+    type: Recreate
+  template:
+    spec:
+      containers:
+        - image: bot-interactive
+          imagePullPolicy: Always
+          name: bot-interactive
+          env:
+            - name: API_URL
+              value: http://api:8082
+            - name: DISCORD_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: discord-deputy
+                  key: discord_token
