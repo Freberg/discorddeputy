@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id 'org.springframework.boot'
     id 'org.jetbrains.kotlin.jvm'
@@ -8,23 +10,22 @@ jar {
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = "21"
+    compilerOptions.jvmTarget = JvmTarget.JVM_21
 }
 
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "21"
+    compilerOptions.jvmTarget = JvmTarget.JVM_21
 }
 
 dependencies {
     implementation project(":discorddeputy-api-client")
-    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
 
-    implementation 'com.discord4j:discord4j-core:3.2.6'
+    implementation "com.discord4j:discord4j-core:$discord4jVersion"
+    implementation "net.sf.jopt-simple:jopt-simple:$joptVersion"
 
-    implementation 'org.slf4j:slf4j-api:2.0.9'
-    implementation 'ch.qos.logback:logback-core:1.4.11'
-    implementation 'ch.qos.logback:logback-classic:1.4.11'
+    implementation 'org.slf4j:slf4j-api'
+    implementation 'ch.qos.logback:logback-core'
+    implementation 'ch.qos.logback:logback-classic'
 
-    implementation 'net.sf.jopt-simple:jopt-simple:5.0.4'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
