@@ -33,10 +33,13 @@ jobs:
       - name: Gradle build
         run: ./gradlew build
       - name: Record test results
-        uses: mikepenz/action-junit-report@v4
-        if: success() || failure() # always run even if the previous step fails
+        uses: dorny/test-reporter@v1
+        if: always()
         with:
-          report_paths: '**/build/test-results/test/TEST-*.xml'
+          name: test reports
+          path: '**/build/test-results/test/TEST-*.xml'
+          reporter: java-junit
+          fail-on-error: true
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
