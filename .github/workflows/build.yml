@@ -32,6 +32,11 @@ jobs:
         run: ./gradlew openApiGenerateClient
       - name: Gradle build
         run: ./gradlew build
+      - name: Record test results
+        uses: mikepenz/action-junit-report@v4
+        if: success() || failure() # always run even if the previous step fails
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
