@@ -25,5 +25,6 @@ spring:
     bindings:
       processor-in-0:
         destination: source-notifications
+        group: processor-group
       processor-out-0:
         destination: bot-notifications

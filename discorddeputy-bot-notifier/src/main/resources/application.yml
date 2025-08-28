@@ -15,5 +15,6 @@ spring:
     stream.bindings:
       sink-in-0:
         destination: bot-notifications
+        group: bot-notifier-group
 
 discorddeputy.api.url: ${API_URL:http://localhost:8082}
