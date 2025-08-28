@@ -8,4 +8,4 @@ resources:
 images:
   - name: fetcher-epic
     newName: freberg/discorddeputy-fetcher-epic
-    newTag: 0.2.1
+    newTag: 0.2.3
