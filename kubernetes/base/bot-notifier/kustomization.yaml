@@ -8,4 +8,4 @@ resources:
 images:
   - name: bot-notifier
     newName: freberg/discorddeputy-bot-notifier
-    newTag: 0.2.0
+    newTag: 0.2.3
