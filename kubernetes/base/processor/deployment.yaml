@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: processor
 spec:
+  replicas: 2
   strategy:
     type: Recreate
   template:

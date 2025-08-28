@@ -8,4 +8,4 @@ resources:
 images:
   - name: processor
     newName: freberg/discorddeputy-processor
-    newTag: 0.1.0
+    newTag: 0.2.2
