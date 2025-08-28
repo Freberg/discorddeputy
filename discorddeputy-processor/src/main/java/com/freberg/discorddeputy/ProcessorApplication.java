@@ -24,7 +24,7 @@ public class ProcessorApplication {
     }
 
     private Mono<DiscordNotification> persist(DiscordNotification discordNotification) {
-        return repository.save(discordNotification)
+        return repository.insert(discordNotification)
                 .doOnNext(savedNotification -> log.info("Persisted new notification with ID \"{}\" to DB from source \"{}\"",
                         savedNotification.getId(), savedNotification.getSource()))
                 .onErrorResume(DuplicateKeyException.class, e -> {
