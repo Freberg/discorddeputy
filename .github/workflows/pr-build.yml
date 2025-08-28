@@ -1,7 +1,7 @@
 on:
   pull_request:
 
-name: build
+name: pr-build
 
 jobs:
   build:
