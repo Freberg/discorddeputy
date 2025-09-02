@@ -4,5 +4,4 @@ commonLabels:
 resources:
   - deployment.yaml
   - service.yaml
-  - persistent-volume.yaml
   - persistent-volume-claim.yaml

@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: rabbitmq
 spec:
-  storageClassName: manual
+  storageClassName: longhorn-single-replica
   accessModes:
     - ReadWriteOnce
   resources:
