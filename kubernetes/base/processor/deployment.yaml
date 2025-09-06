@@ -30,13 +30,13 @@ spec:
             - name: RABBIT_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: discord-deputy
-                  key: rabbit_user
+                  name: rabbitmq-default-user
+                  key: username 
             - name: RABBIT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: discord-deputy
-                  key: rabbit_pass
+                  name: rabbitmq-default-user
+                  key: password 
           ports:
             - containerPort: 8085
               name: main

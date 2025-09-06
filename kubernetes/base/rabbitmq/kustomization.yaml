@@ -2,6 +2,4 @@ commonLabels:
   app: rabbitmq
 
 resources:
-  - deployment.yaml
-  - service.yaml
-  - persistent-volume-claim.yaml
+  - rabbitmq-cluster.yaml
