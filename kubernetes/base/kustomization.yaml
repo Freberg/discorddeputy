@@ -9,8 +9,9 @@ resources:
   - fetcher-epic
 #  - fetcher-steam
 
-#patches:
-#  - path: actuator-probes-patch.yaml
-#    target:
-#      kind: Deployment
-#      labelSelector: "app in (fetcher-epic, api, processor, bot-notifier)"
+patches:
+  - path: actuator-probes-patch.yaml
+    target:
+      kind: Deployment
+      #labelSelector: "app in (fetcher-epic, api, processor, bot-notifier)"
+      labelSelector: "app in (fetcher-epic, bot-notifier)"
