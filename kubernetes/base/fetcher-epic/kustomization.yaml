@@ -1,5 +1,7 @@
-commonLabels:
-  app: fetcher-epic
+labels:
+  - pairs:
+      app: fetcher-epic
+    includeSelectors: true
 
 resources:
   - deployment.yaml
@@ -8,4 +10,4 @@ resources:
 images:
   - name: fetcher-epic
     newName: freberg/discorddeputy-fetcher-epic
-    newTag: 0.2.3
+    newTag: 0.3.0
