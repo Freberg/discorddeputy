@@ -21,7 +21,6 @@ dependencies {
     implementation project(":discorddeputy-api-client")
 
     implementation "com.discord4j:discord4j-core:$discord4jVersion"
-    implementation "net.sf.jopt-simple:jopt-simple:$joptVersion"
 
     implementation 'org.slf4j:slf4j-api'
     implementation 'ch.qos.logback:logback-core'
