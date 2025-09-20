@@ -1,5 +1,6 @@
-commonLabels:
-  app: fetcher-steam
+labels:
+  - pairs:
+      app: fetcher-steam
 
 resources:
   - deployment.yaml

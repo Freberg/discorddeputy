@@ -1,5 +1,6 @@
-commonLabels:
-  app: processor
+labels:
+  - pairs:
+      app: processor
 
 resources:
   - deployment.yaml
@@ -8,4 +9,4 @@ resources:
 images:
   - name: processor
     newName: freberg/discorddeputy-processor
-    newTag: 0.2.3
+    newTag: 0.3.1

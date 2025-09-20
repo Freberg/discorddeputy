@@ -1,7 +1,6 @@
 labels:
   - pairs:
       app: fetcher-epic
-    includeSelectors: true
 
 resources:
   - deployment.yaml

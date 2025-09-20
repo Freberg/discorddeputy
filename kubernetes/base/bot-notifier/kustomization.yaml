@@ -1,5 +1,6 @@
-commonLabels:
-  app: bot-notifier
+labels:
+  - pairs:
+      app: bot-notifier
 
 resources:
   - deployment.yaml

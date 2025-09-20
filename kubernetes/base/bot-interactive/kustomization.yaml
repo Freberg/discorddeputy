@@ -1,5 +1,6 @@
-commonLabels:
-  app: bot-interactive
+labels:
+  - pairs:
+      app: bot-interactive
 
 resources:
   - deployment.yaml
@@ -7,4 +8,4 @@ resources:
 images:
   - name: bot-interactive
     newName: freberg/discorddeputy-bot-interactive
-    newTag: 0.2.0
+    newTag: 0.3.1
