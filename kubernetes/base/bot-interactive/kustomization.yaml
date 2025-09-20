@@ -1,6 +1,7 @@
 labels:
   - pairs:
       app: bot-interactive
+    includeSelectors: true
 
 resources:
   - deployment.yaml

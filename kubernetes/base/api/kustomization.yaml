@@ -1,6 +1,7 @@
 labels:
   - pairs:
       app: api
+    includeSelectors: true
 
 resources:
   - deployment.yaml

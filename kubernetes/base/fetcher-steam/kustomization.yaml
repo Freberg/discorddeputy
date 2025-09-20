@@ -1,6 +1,7 @@
 labels:
   - pairs:
       app: fetcher-steam
+    includeSelectors: true
 
 resources:
   - deployment.yaml
