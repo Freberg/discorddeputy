@@ -9,15 +9,16 @@ import discord4j.core.object.entity.channel.Channel;
 import discord4j.core.spec.EmbedCreateSpec;
 import discord4j.discordjson.json.MessageCreateRequest;
 import discord4j.rest.util.Color;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-@Slf4j
 @Component
 public class DiscordNotifier implements ApplicationRunner {
 
+    private static final Logger log = LoggerFactory.getLogger(DiscordNotifier.class);
     private GatewayDiscordClient client;
 
     @Override

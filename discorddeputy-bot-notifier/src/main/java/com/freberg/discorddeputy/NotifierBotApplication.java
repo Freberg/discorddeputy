@@ -1,21 +1,24 @@
 package com.freberg.discorddeputy;
 
 import com.freberg.discorddeputy.model.DiscordNotification;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.util.function.Consumer;
 
-@Slf4j
-@RequiredArgsConstructor
 @SpringBootApplication
 @SuppressWarnings("unused")
 public class NotifierBotApplication {
 
+    private static final Logger log = LoggerFactory.getLogger(NotifierBotApplication.class);
     private final DiscordNotifier discordNotifier;
+
+    public NotifierBotApplication(DiscordNotifier discordNotifier) {
+        this.discordNotifier = discordNotifier;
+    }
 
     @Bean
     public Consumer<DiscordNotification> sink() {

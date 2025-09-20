@@ -5,7 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.freberg.discorddeputy.EpicGamesApiResponse.*;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -23,17 +24,18 @@ import java.util.stream.Stream;
 import static com.freberg.discorddeputy.DiscordNotification.Type.CURRENT_OFFER;
 import static com.freberg.discorddeputy.DiscordNotification.Type.UPCOMING_OFFER;
 
-@Slf4j
 @Component
 public class EpicGamesOfferFetcher {
+
+    private static final Logger log = LoggerFactory.getLogger(EpicGamesOfferFetcher.class);
 
     private static final String EPIC_GAMES_URL = "https://www.epicgames.com/store/en-US/free-games";
     private static final String EPIC_GAMES_API_URL = "https://store-site-backend-static.ak.epicgames.com";
     private static final String EPIC_GAMES_URI = "/freeGamesPromotions";
-    public static final String IMAGE_TYPE_OFFERING_WIDE = "OfferImageWide";
-    public static final String IMAGE_TYPE_THUMBNAIL = "Thumbnail";
-    public static final String IMAGE_TYPE_DIESEL_STORE_FRONT_WIDE = "DieselStoreFrontWide";
-    public static final String IMAGE_TYPE_VAULT_CLOSED = "VaultClosed";
+    private static final String IMAGE_TYPE_OFFERING_WIDE = "OfferImageWide";
+    private static final String IMAGE_TYPE_THUMBNAIL = "Thumbnail";
+    private static final String IMAGE_TYPE_DIESEL_STORE_FRONT_WIDE = "DieselStoreFrontWide";
+    private static final String IMAGE_TYPE_VAULT_CLOSED = "VaultClosed";
 
     private final WebClient webClient = WebClient.create();
     private final ObjectMapper objectMapper = JsonMapper.builder()

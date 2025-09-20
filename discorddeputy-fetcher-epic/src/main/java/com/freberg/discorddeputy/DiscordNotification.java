@@ -12,7 +12,7 @@ import java.time.Instant;
 @Value.Immutable
 @JsonSerialize(as = ImmutableDiscordNotification.class)
 @JsonDeserialize(as = ImmutableDiscordNotification.class)
-interface DiscordNotification {
+public interface DiscordNotification {
 
     String id();
 

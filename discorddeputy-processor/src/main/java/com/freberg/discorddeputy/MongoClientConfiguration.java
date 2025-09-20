@@ -27,8 +27,8 @@ public class MongoClientConfiguration {
         @Override
         public Document convert(DiscordNotification source) {
             var document = new Document();
-            document.put("_id", source.getId());
-            document.put("source", source.getSource());
+            document.put("_id", source.id());
+            document.put("source", source.source());
 
             source.toMap().forEach((key, value) -> {
                 if (value instanceof String) {

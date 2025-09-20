@@ -14,8 +14,8 @@ class DiscordNotificationTest {
         var json = String.format("{\"id\":\"%s\",\"source\":\"%s\",\"unknownField\":\"value\"}", "1", "some_source");
         var deserialized = objectMapper.readValue(json, DiscordNotification.class);
         var serialized = objectMapper.writeValueAsString(deserialized);
-        assertEquals("1", deserialized.getId());
-        assertEquals("some_source", deserialized.getSource());
+        assertEquals("1", deserialized.id());
+        assertEquals("some_source", deserialized.source());
         assertEquals(json.length(), serialized.length());
     }
 }
