@@ -14,7 +14,7 @@ spec:
           name: processor
           env:
             - name: SPRING_R2DBC_URL
-              value: r2dbc:postgresql://discord-deputy-db-rw:5432/discordnotifications
+              value: r2dbc:postgresql://discord-deputy-db-rw:5432/app
             - name: SPRING_R2DBC_USERNAME
               valueFrom:
                 secretKeyRef:
