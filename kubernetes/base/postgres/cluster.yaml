@@ -7,3 +7,10 @@ spec:
   storage:
     size: 5Gi
     storageClass: longhorn-single-replica
+  probes:
+    liveness:
+      periodSeconds: 20
+      timeoutSeconds: 5
+    readiness:
+      periodSeconds: 20
+      timeoutSeconds: 5
