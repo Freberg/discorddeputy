@@ -2,7 +2,7 @@
   path: /spec/template/spec/containers/0/livenessProbe
   value:
     httpGet:
-      path: /actuator/health
+      path: /actuator/health/liveness
       port: monitor
     initialDelaySeconds: 60
     periodSeconds: 15
@@ -11,7 +11,7 @@
   path: /spec/template/spec/containers/0/readinessProbe
   value:
     httpGet:
-      path: /actuator/health
+      path: /actuator/health/readiness
       port: monitor
     initialDelaySeconds: 60
     periodSeconds: 10
