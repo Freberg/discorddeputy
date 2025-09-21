@@ -18,12 +18,12 @@ spec:
             - name: SPRING_R2DBC_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: discord-deputy-db-superuser
+                  name: discord-deputy-db-app
                   key: username
             - name: SPRING_R2DBC_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: discord-deputy-db-superuser
+                  name: discord-deputy-db-app
                   key: password
             - name: RABBIT_HOST
               value: rabbitmq
