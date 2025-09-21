@@ -1,7 +1,0 @@
-commonLabels:
-  app: mongo
-
-resources:
-  - deployment.yaml
-  - service.yaml
-  - persistent-volume-claim.yaml

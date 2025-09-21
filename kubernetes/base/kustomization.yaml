@@ -1,7 +1,7 @@
 resources:
   - namespace.yaml
   - rabbitmq
-  - mongo
+  - postgres
   - api
   - bot-interactive
   - bot-notifier

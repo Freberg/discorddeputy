@@ -13,18 +13,18 @@ spec:
           imagePullPolicy: Always
           name: api
           env:
-            - name: MONGO_HOST
-              value: mongo
-            - name: MONGO_USERNAME
+            - name: SPRING_R2DBC_URL
+              value: r2dbc:postgresql://discord-deputy-db-ro:5432/discordnotifications
+            - name: SPRING_R2DBC_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: discord-deputy
-                  key: mongo_user
-            - name: MONGO_PASSWORD
+                  name: discord-deputy-db-superuser
+                  key: username
+            - name: SPRING_R2DBC_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: discord-deputy
-                  key: mongo_pass
+                  name: discord-deputy-db-superuser
+                  key: password
             - name: RABBIT_HOST
               value: rabbitmq
             - name: RABBIT_USERNAME
