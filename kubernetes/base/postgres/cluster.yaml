@@ -7,9 +7,6 @@ spec:
   storage:
     size: 5Gi
     storageClass: longhorn-single-replica
-  postgresql:
-    parameters:
-      jsonb_pretty: "on"
   databases:
     - name: discordnotifications
       owner: postgres
