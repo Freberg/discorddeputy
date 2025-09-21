@@ -7,10 +7,20 @@ spec:
   storage:
     size: 5Gi
     storageClass: longhorn-single-replica
+  resources:
+    requests:
+      cpu: 500m
+      memory: 500Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+  postgresql:
+    parameters:
+      shared_buffers: "128MB"
   probes:
     liveness:
-      periodSeconds: 20
-      timeoutSeconds: 5
+      periodSeconds: 30
+      timeoutSeconds: 15
     readiness:
-      periodSeconds: 20
-      timeoutSeconds: 5
+      periodSeconds: 30
+      timeoutSeconds: 15
