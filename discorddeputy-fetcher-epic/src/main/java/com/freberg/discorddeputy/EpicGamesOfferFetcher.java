@@ -132,7 +132,7 @@ public class EpicGamesOfferFetcher {
                 .ifPresent(builder::imageUrl);
 
         resolveImageUrl(offer, IMAGE_TYPE_THUMBNAIL)
-                .ifPresent(builder::thumbNailUrl);
+                .ifPresent(builder::thumbnailUrl);
 
         return Optional.of(builder.build());
     }

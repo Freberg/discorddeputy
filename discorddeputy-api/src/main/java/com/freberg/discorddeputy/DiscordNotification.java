@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.Instant;
 
-
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record DiscordNotification(@NotNull String id,
                                   @NotNull String source,

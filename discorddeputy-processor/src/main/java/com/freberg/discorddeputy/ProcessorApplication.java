@@ -1,11 +1,11 @@
 package com.freberg.discorddeputy;
 
+import com.freberg.discorddeputy.repository.DiscordNotificationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.dao.DuplicateKeyException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -27,13 +27,10 @@ public class ProcessorApplication {
     }
 
     private Mono<DiscordNotification> persist(DiscordNotification discordNotification) {
-        return repository.insert(discordNotification)
+        return repository.insertNotification(discordNotification)
                 .doOnNext(savedNotification -> log.info("Persisted new notification with ID \"{}\" to DB from source \"{}\"",
                         savedNotification.id(), savedNotification.source()))
-                .onErrorResume(DuplicateKeyException.class, e -> {
-                    log.info("Notification with ID \"{}\" already exists in DB. Skipping.", discordNotification.id());
-                    return Mono.empty();
-                })
+                .switchIfEmpty(Mono.fromRunnable(() -> log.info("Notification with ID \"{}\" already exists in DB. Skipping.", discordNotification.id())))
                 .doOnError(e -> log.error("Error persisting notification with ID \"{}\" from source \"{}\"",
                         discordNotification.id(), discordNotification.source(), e));
     }

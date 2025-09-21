@@ -26,8 +26,8 @@ The application consists of the following microservices:
 Additional information:
 
 * The services communicate via RabbitMQ for asynchronous messaging.
-* The Processor service persist data in a MongoDB instance. The API service reads from this MongoDB instance to respond
-  to queuries.
+* The Processor service persist data in a postgres database. The API service reads from this postgres database to
+  respond to queries.
 
 ## System Architecture
 
@@ -46,7 +46,7 @@ graph TD
     subgraph "DiscordDeputy Services"
         SourceExchange[(Source Notifications Exchange)]
         BotExchange[(Bot Notifications Exchange)]
-        MongoDB[(MongoDB)]
+        Postgres[(Postgres)]
         EpicFetcher[Epic Games Fetcher]
         SteamFetcher[Steam News Fetcher]
         EpicFetcher -- Queries --> EpicGamesApi
@@ -55,12 +55,12 @@ graph TD
         SteamFetcher --> SourceExchange
         SourceExchange --> Processor[Processor Service]
         Processor --> BotExchange
-        Processor -- Reads/Writes --> MongoDB
+        Processor -- Reads/Writes --> Postgres
         BotExchange --> BotNotifier[Bot Notifier Service]
         BotNotifier -- Writes --> Discord
         DiscordBot["Discord Bot (Interactive)"] -- Reads/Writes --> Discord
         ApiService[API Service]
-        ApiService -- Reads --> MongoDB
+        ApiService -- Reads --> Postgres
         DiscordBot["Discord Bot (Interactive)"] -- Queries --> ApiService
     end
 ```

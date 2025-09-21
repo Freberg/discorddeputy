@@ -31,7 +31,7 @@ public interface DiscordNotification {
     String imageUrl();
 
     @Nullable
-    String thumbNailUrl();
+    String thumbnailUrl();
 
     Instant startTime();
 
@@ -45,7 +45,7 @@ public interface DiscordNotification {
         CURRENT_OFFER("Current Offer"),
         UPCOMING_OFFER("Upcoming Offer");
 
-        String displayName;
+        final String displayName;
 
         Type(String displayName) {
             this.displayName = displayName;
