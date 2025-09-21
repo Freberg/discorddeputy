@@ -4,7 +4,15 @@ management:
   endpoints:
     jmx.exposure.include: "*"
     web.exposure.include: "*"
+  endpoint:
+    health:
+      group:
+        readiness:
+          include: r2dbc,rabbit
+      show-details: always
   health:
+    probes:
+      enabled: true
     rabbit.enabled: true
   server.port: 7085
 spring:
