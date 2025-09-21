@@ -3,6 +3,14 @@ management:
   endpoints:
     jmx.exposure.include: "*"
     web.exposure.include: "*"
+  endpoint:
+    health:
+      group:
+        readiness:
+          include: rabbit
+  health:
+    probes:
+      enabled: true
   server.port: 7081
 spring:
   rabbitmq:
