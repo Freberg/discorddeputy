@@ -1,5 +1,2 @@
-commonLabels:
-  app: rabbitmq
-
 resources:
   - rabbitmq-cluster.yaml
