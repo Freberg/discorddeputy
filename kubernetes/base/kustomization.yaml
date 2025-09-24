@@ -14,3 +14,8 @@ patches:
     target:
       kind: Deployment
       labelSelector: "app in (fetcher-epic, api, processor, bot-notifier)"
+  - path: resources-patch.yaml
+    target: 
+      kind: Deployment
+      labelSelector: "app in (fetcher-epic, api, processor, bot-notifier, bot-interactive)"
+
