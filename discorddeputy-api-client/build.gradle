@@ -1,0 +1,22 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "io.ktor:ktor-client-core:${ktorVersion}"
+    implementation "io.ktor:ktor-client-apache:${ktorVersion}"
+    implementation "io.ktor:ktor-client-content-negotiation:${ktorVersion}"
+    implementation "io.ktor:ktor-serialization-gson:${ktorVersion}"
+
+
+    testImplementation "io.ktor:ktor-client-mock:${ktorVersion}"
+    testImplementation platform("org.junit:junit-bom:${junitVersion}")
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+    testRuntimeOnly "org.junit.platform:junit-platform-launcher"
+    testRuntimeOnly "ch.qos.logback:logback-classic:1.5.18"
+}

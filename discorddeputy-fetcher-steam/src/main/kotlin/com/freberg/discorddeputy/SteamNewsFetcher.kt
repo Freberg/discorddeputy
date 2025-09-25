@@ -3,7 +3,7 @@ package com.freberg.discorddeputy
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonMapperBuilder
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.MediaType
@@ -23,23 +23,21 @@ private const val STEAM_GAMES_URI =
 
 @Component
 class SteamNewsFetcher(
-    @Value("\${steam.pollFrequency.duration:30}")
+    @param:Value("\${steam.pollFrequency.duration:30}")
     private val pollFrequencyDuration: Long,
-    @Value("\${steam.pollFrequency.timeUnit:MINUTES}")
+    @param:Value("\${steam.pollFrequency.timeUnit:MINUTES}")
     private val timeUnit: ChronoUnit,
-    @Value("\${steam.apps:594650}")
+    @param:Value("\${steam.apps:594650}")
     private val appIds: List<String>
 ) {
 
     private val log = LoggerFactory.getLogger(this.javaClass)
     private val webClient = WebClient.create(STEAM_GAMES_HOST)
-    private val objectMapper = jacksonObjectMapper()
-
-    init {
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-        objectMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
-        objectMapper.registerModule(JavaTimeModule())
-    }
+    private val objectMapper = jacksonMapperBuilder()
+        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
+        .addModule(JavaTimeModule())
+        .build()
 
     fun fetchNews(): Flux<DiscordNotification> =
         Flux.interval(Duration.ZERO, Duration.of(pollFrequencyDuration, timeUnit))
