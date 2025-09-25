@@ -6,4 +6,3 @@ include 'discorddeputy-bot-interactive'
 include 'discorddeputy-processor'
 include 'discorddeputy-api'
 include 'discorddeputy-api-client'
-
