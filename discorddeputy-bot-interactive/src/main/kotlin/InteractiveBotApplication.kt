@@ -1,6 +1,5 @@
-import com.freberg.discorddeputy.api.ApiApplicatiionApi
-import com.freberg.discorddeputy.invoker.ApiClient
-import com.freberg.discorddeputy.model.DiscordNotification
+import com.freberg.discorddeputy.api.ApiClient
+import com.freberg.discorddeputy.api.DiscordNotification
 import discord4j.common.JacksonResources
 import discord4j.core.DiscordClientBuilder
 import discord4j.core.event.domain.interaction.ChatInputInteractionEvent
@@ -11,12 +10,12 @@ import discord4j.core.spec.InteractionFollowupCreateSpec
 import discord4j.discordjson.json.ApplicationCommandRequest
 import discord4j.rest.RestClient
 import discord4j.rest.util.Color
+import kotlinx.coroutines.reactor.awaitSingle
+import kotlinx.coroutines.reactor.mono
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import java.time.Instant
-import java.util.function.Supplier
 
 val LOGGER: Logger = LoggerFactory.getLogger(object {}.javaClass)
 
@@ -55,13 +54,9 @@ fun createCommands(commandFiles: List<String>): List<ApplicationCommandRequest> 
         .toList()
 }
 
-fun createApiClient(): ApiApplicatiionApi {
-    val apiClient = ApiClient()
-    apiClient.setBasePath(System.getenv("API_URL"))
-    return ApiApplicatiionApi(apiClient)
-}
+fun createApiClient(): ApiClient = ApiClient(System.getenv("API_URL"))
 
-fun handle(apiClient: ApiApplicatiionApi, event: ChatInputInteractionEvent): Mono<Message> {
+fun handle(apiClient: ApiClient, event: ChatInputInteractionEvent): Mono<Message> {
     return when (event.commandName) {
         "offers" -> {
             val offerType = event.getOption("type")
@@ -70,11 +65,11 @@ fun handle(apiClient: ApiApplicatiionApi, event: ChatInputInteractionEvent): Mon
                 .orElse("current")
 
             if (offerType == "upcoming")
-                responseUsingApi(event) { apiClient.upcomingOffers } else
-                responseUsingApi(event) { apiClient.currentOffers }
+                responseUsingApi(event) { apiClient.upcomingOffers() } else
+                responseUsingApi(event) { apiClient.currentOffers() }
         }
 
-        "news" -> responseUsingApi(event) { apiClient.latestNews }
+        "news" -> responseUsingApi(event) { apiClient.latestNews() }
         else -> {
             LOGGER.error("Unknown command \"{}\"", event.commandName)
             return Mono.empty()
@@ -82,14 +77,24 @@ fun handle(apiClient: ApiApplicatiionApi, event: ChatInputInteractionEvent): Mon
     }
 }
 
-fun responseUsingApi(event: ChatInputInteractionEvent, apiCall: Supplier<Flux<DiscordNotification>>):
-        Mono<Message> {
-    return event.deferReply()
-        .withEphemeral(true)
-        .thenMany(apiCall.get())
-        .collectList()
-        .map { toInteractionFollowupCreateSpec(it) }
-        .flatMap { event.createFollowup(it) }
+fun responseUsingApi(
+    event: ChatInputInteractionEvent,
+    apiCall: suspend () -> List<DiscordNotification>
+): Mono<Message> {
+    return mono {
+        try {
+            val notifications = apiCall()
+            val followupSpec = toInteractionFollowupCreateSpec(notifications)
+            event.createFollowup(followupSpec).awaitSingle()
+        } catch (e: Exception) {
+            LOGGER.error("API call failed", e)
+            event.createFollowup(
+                InteractionFollowupCreateSpec.builder()
+                    .content("An error occurred while fetching data.")
+                    .build()
+            ).awaitSingle()
+        }
+    }
 }
 
 fun toInteractionFollowupCreateSpec(notifications: List<DiscordNotification>): InteractionFollowupCreateSpec {
@@ -121,7 +126,7 @@ fun toSingletonResponse(notification: DiscordNotification): EmbedCreateSpec {
     } ?: run {
         builder.description(notification.description)
     }
-    notification.url?.let { builder.url(it) }
+    notification.url.let { builder.url(it) }
     notification.imageUrl?.let { builder.image(it) }
 
     return builder.build()
@@ -142,7 +147,5 @@ fun toListResponse(notifications: List<DiscordNotification>): EmbedCreateSpec {
     }
     return builder.build()
 }
-
-
 
 

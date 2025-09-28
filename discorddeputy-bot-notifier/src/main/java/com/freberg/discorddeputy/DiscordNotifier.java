@@ -1,6 +1,6 @@
 package com.freberg.discorddeputy;
 
-import com.freberg.discorddeputy.model.DiscordNotification;
+import com.freberg.discorddeputy.api.DiscordNotification;
 import discord4j.core.DiscordClient;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.lifecycle.ReadyEvent;
@@ -56,17 +56,14 @@ public class DiscordNotifier implements ApplicationRunner {
     private static EmbedCreateSpec toEmbedCreateSpec(DiscordNotification notification) {
         var builder = EmbedCreateSpec.builder()
                 .title(notification.getTitle())
-                .timestamp(notification.getTimestamp().toInstant())
+                .url(notification.getUrl())
+                .timestamp(notification.getTimestamp())
                 .color(Color.BLACK);
 
         if (notification.getDescriptionHeader() != null) {
             builder.addField(notification.getDescriptionHeader(), notification.getDescription(), false);
         } else {
             builder.description(notification.getDescription());
-        }
-
-        if (notification.getUrl() != null) {
-            builder.url(notification.getUrl());
         }
         if (notification.getImageUrl() != null) {
             builder.image(notification.getImageUrl());
