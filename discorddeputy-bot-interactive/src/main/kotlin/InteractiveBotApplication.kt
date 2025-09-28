@@ -81,21 +81,23 @@ fun responseUsingApi(
     event: ChatInputInteractionEvent,
     apiCall: suspend () -> List<DiscordNotification>
 ): Mono<Message> {
-    return event.deferReply().then(
-        mono {
-            try {
-                val notifications = apiCall()
-                val followupSpec = toInteractionFollowupCreateSpec(notifications)
-                event.createFollowup(followupSpec).awaitSingle()
-            } catch (e: Exception) {
-                LOGGER.error("API call failed", e)
-                event.createFollowup(
-                    InteractionFollowupCreateSpec.builder()
-                        .content("An error occurred while fetching data.")
-                        .build()
-                ).awaitSingle()
-            }
-        })
+    return event.deferReply()
+        .withEphemeral(true)
+        .then(
+            mono {
+                try {
+                    val notifications = apiCall()
+                    val followupSpec = toInteractionFollowupCreateSpec(notifications)
+                    event.createFollowup(followupSpec).awaitSingle()
+                } catch (e: Exception) {
+                    LOGGER.error("API call failed", e)
+                    event.createFollowup(
+                        InteractionFollowupCreateSpec.builder()
+                            .content("An error occurred while fetching data.")
+                            .build()
+                    ).awaitSingle()
+                }
+            })
 }
 
 fun toInteractionFollowupCreateSpec(notifications: List<DiscordNotification>): InteractionFollowupCreateSpec {
