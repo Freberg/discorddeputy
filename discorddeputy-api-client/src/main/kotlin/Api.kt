@@ -1,20 +1,20 @@
 package com.freberg.discorddeputy.api
 
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonDeserializer
-import com.google.gson.JsonElement
-import com.google.gson.JsonParseException
-import com.google.gson.JsonPrimitive
-import com.google.gson.JsonSerializationContext
-import com.google.gson.JsonSerializer
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.databind.DeserializationContext
+import com.fasterxml.jackson.databind.JsonSerializer
+import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer
+import com.fasterxml.jackson.databind.module.SimpleModule
 import io.ktor.client.*
-import io.ktor.client.call.body
-import io.ktor.client.engine.HttpClientEngine
-import io.ktor.client.engine.cio.CIO
+import io.ktor.client.call.*
+import io.ktor.client.engine.*
+import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
-import io.ktor.serialization.gson.*
-import java.lang.reflect.Type
+import io.ktor.serialization.jackson.*
+import java.io.IOException
 import java.time.Instant
 import java.time.format.DateTimeParseException
 
@@ -22,8 +22,8 @@ class ApiClient(val baseUrl: String, engine: HttpClientEngine) {
 
     private val client = HttpClient(engine) {
         install(ContentNegotiation) {
-            gson {
-                registerTypeAdapter(Instant::class.java, InstantAdapter())
+            jackson {
+                registerModule(InstantModule())
             }
         }
     }
@@ -43,17 +43,27 @@ class ApiClient(val baseUrl: String, engine: HttpClientEngine) {
     }
 }
 
-class InstantAdapter : JsonSerializer<Instant>, JsonDeserializer<Instant> {
-    override fun serialize(src: Instant, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement {
-        return JsonPrimitive(src.toString())
+class InstantSerializer : JsonSerializer<Instant>() {
+    override fun serialize(value: Instant?, gen: JsonGenerator, serializers: SerializerProvider) {
+        gen.writeString(value.toString())
     }
+}
 
-    override fun deserialize(json: JsonElement, typeOfT: Type?, context: JsonDeserializationContext?): Instant {
+class InstantDeserializer : StdDeserializer<Instant>(Instant::class.java) {
+    override fun deserialize(p: JsonParser?, ctxt: DeserializationContext): Instant? {
+        val dateString = p!!.text
         return try {
-            Instant.parse(json.asString)
+            Instant.parse(dateString)
         } catch (e: DateTimeParseException) {
-            throw JsonParseException("Failed to parse Instant from JSON: ${json.asString}", e)
+            throw IOException("Failed to parse Instant from JSON: $dateString", e)
         }
+    }
+}
+
+class InstantModule : SimpleModule() {
+    init {
+        addSerializer(Instant::class.java, InstantSerializer())
+        addDeserializer(Instant::class.java, InstantDeserializer())
     }
 }
 

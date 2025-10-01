@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id 'org.jetbrains.kotlin.jvm'
+    id 'org.jetbrains.kotlin.plugin.noarg' version '2.2.20'
 }
 
 repositories {
@@ -21,7 +22,9 @@ dependencies {
     implementation "io.ktor:ktor-client-core:${ktorVersion}"
     implementation "io.ktor:ktor-client-cio:${ktorVersion}"
     implementation "io.ktor:ktor-client-content-negotiation:${ktorVersion}"
-    implementation "io.ktor:ktor-serialization-gson:${ktorVersion}"
+    implementation "io.ktor:ktor-serialization-jackson:${ktorVersion}"
+    implementation "com.fasterxml.jackson.core:jackson-databind"
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin"
 
 
     testImplementation "io.ktor:ktor-client-mock:${ktorVersion}"
