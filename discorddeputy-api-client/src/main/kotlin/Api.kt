@@ -1,5 +1,6 @@
 package com.freberg.discorddeputy.api
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationContext
@@ -67,6 +68,7 @@ class InstantModule : SimpleModule() {
     }
 }
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class DiscordNotification(
     val id: String,
     val timestamp: Instant,
