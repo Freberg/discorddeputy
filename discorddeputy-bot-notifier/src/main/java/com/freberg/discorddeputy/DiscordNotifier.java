@@ -6,9 +6,11 @@ import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.lifecycle.ReadyEvent;
 import discord4j.core.object.entity.Guild;
 import discord4j.core.object.entity.channel.Channel;
+import discord4j.core.object.entity.channel.TextChannel;
 import discord4j.core.spec.EmbedCreateSpec;
 import discord4j.discordjson.json.MessageCreateRequest;
 import discord4j.rest.util.Color;
+import discord4j.rest.util.Permission;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
@@ -46,10 +48,15 @@ public class DiscordNotifier implements ApplicationRunner {
 
     private void dispatchMessage(MessageCreateRequest message) {
         client.getGuilds()
-                .flatMap(Guild::getChannels)
-                .filter(channel -> Channel.Type.GUILD_TEXT == channel.getType())
-                .map(Channel::getRestChannel)
-                .flatMap(channel -> channel.createMessage(message))
+                .flatMap(guild -> guild.getChannels()
+                        .ofType(TextChannel.class)
+                        .filterWhen(channel -> channel.getEffectivePermissions(client.getSelfId())
+                                .map(permissions -> permissions.contains(Permission.SEND_MESSAGES)
+                                        && permissions.contains(Permission.VIEW_CHANNEL))
+                        )
+                        .map(TextChannel::getRestChannel)
+                        .flatMap(channel -> channel.createMessage(message))
+                )
                 .subscribe();
     }
 
