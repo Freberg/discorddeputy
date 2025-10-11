@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: api-smoke-test-template
+spec:
+  args:
+    - name: service-name
+  metrics:
+    - name: http-smoke-test
+      successCondition: len(result) > 0
+      provider:
+        web:
+          url: http://{{args.service-name}}/currentOffers
+          jsonPath: "."

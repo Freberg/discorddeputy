@@ -1,12 +1,31 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: api
 spec:
   replicas: 2
+  selector:
+    matchLabels:
+      app: api
   strategy:
-    type: RollingUpdate
+    canary:
+      stableService: api
+      canaryService: api-canary
+      maxUnavailable: 1
+      maxSurge: 0
+      steps:
+      - setWeight: 50
+      - analysis:
+          templates:
+            - templateName: api-smoke-test-template
+          args:
+            - name: service-name
+              value: api-canary.discord-deputy.svc.cluster.local:8082
+      - setWeight: 100
   template:
+    metadata:
+      labels:
+        app: api
     spec:
       containers:
         - image: api
