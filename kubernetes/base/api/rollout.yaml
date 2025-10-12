@@ -11,8 +11,8 @@ spec:
     canary:
       stableService: api
       canaryService: api-canary
-      maxUnavailable: 1
-      maxSurge: 0
+      maxUnavailable: 0
+      maxSurge: 1
       steps:
       - setWeight: 50
       - analysis:
