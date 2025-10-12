@@ -1,6 +1,7 @@
 HELP.md
 .gradle
 build/
+bin/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
@@ -15,6 +16,7 @@ build/
 .sts4-cache
 
 ### IntelliJ IDEA ###
+.run
 .idea
 *.iws
 *.iml

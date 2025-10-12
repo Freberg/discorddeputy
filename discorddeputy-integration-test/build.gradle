@@ -1,0 +1,27 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+plugins {
+    id 'org.springframework.boot'
+    id 'org.jetbrains.kotlin.jvm'
+}
+
+jar {
+    enabled = false
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release.set(24)
+}
+
+tasks.withType(KotlinCompile).configureEach {
+    compilerOptions.jvmTarget.set(JvmTarget.JVM_24)
+}
+
+dependencies {
+    implementation 'org.slf4j:slf4j-api'
+    implementation 'ch.qos.logback:logback-core'
+    implementation 'ch.qos.logback:logback-classic'
+
+    implementation("com.rabbitmq:amqp-client:5.26.0")
+}
