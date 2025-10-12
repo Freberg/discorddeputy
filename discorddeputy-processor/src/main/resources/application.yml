@@ -30,7 +30,7 @@ spring:
   cloud.stream:
     bindings:
       processor-in-0:
-        destination: source-notifications
+        destination: ${INPUT_EXCHANGE:source-notifications}
         group: processor-group
       processor-out-0:
-        destination: bot-notifications
+        destination: ${OUTPUT_EXCHANGE:bot-notifications}
