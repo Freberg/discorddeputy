@@ -10,7 +10,7 @@ ext {
     springDocVersion = '2.8.13'
     immutablesVersion = '2.11.4'
     discord4jVersion = '3.2.9'
-    ktorVersion = '3.3.0'
+    ktorVersion = '3.3.1'
     junitVersion = '5.13.4'
 }
 
