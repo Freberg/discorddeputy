@@ -40,8 +40,3 @@ spec:
                 secretKeyRef:
                   name: rabbitmq-default-user
                   key: password
-          ports:
-            - containerPort: 8081
-              name: main
-            - containerPort: 7081
-              name: monitor
