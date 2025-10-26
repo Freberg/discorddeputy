@@ -1,11 +1,11 @@
 resources:
   - namespace.yaml
-#  - rabbitmq
-#  - postgres
-#  - api
-#  - bot-interactive
-#  - bot-notifier
-#  - processor
+  - rabbitmq
+  - postgres
+  - api
+  - bot-interactive
+  - bot-notifier
+  - processor
   - fetcher-epic
 #  - fetcher-steam
 
