@@ -1,6 +1,8 @@
 import com.rabbitmq.client.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.net.HttpURLConnection
+import java.net.URI
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.CountDownLatch
@@ -15,6 +17,7 @@ private val RABBITMQ_USERNAME: String = System.getenv("RABBITMQ_USERNAME") ?: "r
 private val RABBITMQ_PASSWORD: String = System.getenv("RABBITMQ_PASSWORD") ?: "rabbitmq"
 private val INPUT_EXCHANGE: String = System.getenv("INPUT_EXCHANGE") ?: "source-notifications"
 private val OUTPUT_EXCHANGE: String = System.getenv("OUTPUT_EXCHANGE") ?: "bot-notifications"
+private val SHUTDOWN_URL = System.getenv("SERVICE_SHUTDOWN_URL") ?: "http://localhost:7085/actuator/shutdown"
 private val TEST_MODE: String = System.getenv("TEST_MODE") ?: ""
 private val VERIFY_TIMEOUT_MS: Long = System.getenv("VERIFY_TIMEOUT_SECONDS")?.toLongOrNull()?.times(1000) ?: 10000L
 private val TEST_MESSAGE_BODY: String = System.getenv("TEST_MESSAGE_BODY") ?: """
@@ -44,6 +47,7 @@ fun main() {
         factory.newConnection(CONNECTION_NAME).use { connection ->
             connection.createChannel().use { channel ->
                 val success = testFunction(channel)
+                shutdownService()
                 if (success) {
                     LOGGER.info("✨ TEST COMPLETED SUCCESSFULLY!")
                     exitProcess(0)
@@ -91,6 +95,22 @@ fun produceMessage(channel: Channel, exchange: String, message: String) {
         message.toByteArray(StandardCharsets.UTF_8)
     )
     LOGGER.info("✅ Produced message to {}", exchange)
+}
+
+fun shutdownService() {
+    try {
+        LOGGER.info("Sending shutdown request to service: {}", SHUTDOWN_URL)
+        val url = URI.create(SHUTDOWN_URL).toURL();
+        val connection = url.openConnection() as HttpURLConnection
+        connection.requestMethod = "POST"
+        connection.connectTimeout = 3000
+        connection.readTimeout = 3000
+        connection.doOutput = true
+        val responseCode = connection.responseCode
+        LOGGER.info("Shutdown request completed with response code {}", responseCode)
+    } catch (e: Exception) {
+        LOGGER.error("Failed to send shutdown request", e)
+    }
 }
 
 class TestConsumer(private val channel: Channel) : DefaultConsumer(channel), AutoCloseable {
