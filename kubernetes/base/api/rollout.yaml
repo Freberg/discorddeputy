@@ -59,4 +59,5 @@ spec:
           ports:
             - containerPort: 8082
               name: main
-              protocol: TCP
+            - containerPort: 7082
+              name: monitor
