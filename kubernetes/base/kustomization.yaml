@@ -1,11 +1,11 @@
 resources:
   - namespace.yaml
-  - rabbitmq
-  - postgres
-  - api
-  - bot-interactive
-  - bot-notifier
-  - processor
+#  - rabbitmq
+#  - postgres
+#  - api
+#  - bot-interactive
+#  - bot-notifier
+#  - processor
   - fetcher-epic
 #  - fetcher-steam
 
@@ -13,17 +13,17 @@ patches:
   - path: actuator-probes-patch.yaml
     target:
       kind: Deployment
-      labelSelector: "app in (fetcher-epic, processor, bot-notifier)"
+      labelSelector: "app in (processor, bot-notifier)"
   - path: resources-patch.yaml
     target: 
       kind: Deployment
-      labelSelector: "app in (fetcher-epic, processor, bot-notifier, bot-interactive)"
+      labelSelector: "app in (processor, bot-notifier, bot-interactive)"
   - path: actuator-probes-patch.yaml
     target:
       kind: Rollout
-      labelSelector: "app in (api)"
+      labelSelector: "app in (api, fetcher-epic)"
   - path: resources-patch.yaml
     target:
       kind: Rollout
-      labelSelector: "app in (api)"
+      labelSelector: "app in (api, fetcher-epic)"
 

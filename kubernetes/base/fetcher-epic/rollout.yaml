@@ -1,17 +1,32 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: fetcher-epic
 spec:
   replicas: 2
+  selector:
+    matchLabels:
+      app: fetcher-epic
   strategy:
-    type: RollingUpdate
+    canary:
+      maxUnavailable: 0
+      maxSurge: 1
+      steps:
+        - analysis:
+            templates:
+              - templateName: producer-smoke-test-template
+            args:
+              - name: test-exchange-name
+                value: "{{rollout.name}}-test-exchange"
+        - setWeight: 100
   template:
+    metadata:
+      labels:
+        app: fetcher-epic
     spec:
       containers:
-        - image: fetcher-epic
-          imagePullPolicy: Always
-          name: fetcher-epic
+        - name: fetcher-epic
+          image: fetcher-epic
           env:
             - name: RABBIT_HOST
               value: rabbitmq
@@ -24,7 +39,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: rabbitmq-default-user
-                  key: password 
+                  key: password
           ports:
             - containerPort: 8081
               name: main

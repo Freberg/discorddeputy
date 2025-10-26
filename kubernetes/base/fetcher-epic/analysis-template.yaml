@@ -1,0 +1,64 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: producer-smoke-test-template
+spec:
+  args:
+    - name: test-exchange-name
+  metrics:
+    - name: producer-smoke-test
+      successCondition: "result.status == 'Succeeded'"
+      failureCondition: "result.status == 'Failed'"
+      provider:
+        job:
+          spec:
+            activeDeadlineSeconds: 180
+            template:
+              spec:
+                restartPolicy: Never
+                containers:
+                  - name: fetcher-epic
+                    image: fetcher-epic
+                    env:
+                      - name: OUTPUT_EXCHANGE
+                        value: "{{args.test-exchange-name}}"
+                      - name: RABBIT_HOST
+                        value: rabbitmq
+                      - name: RABBIT_USERNAME
+                        valueFrom:
+                          secretKeyRef:
+                            name: rabbitmq-default-user
+                            key: username
+                      - name: RABBIT_PASSWORD
+                        valueFrom:
+                          secretKeyRef:
+                            name: rabbitmq-default-user
+                            key: password
+                    ports:
+                      - containerPort: 8081
+                        name: main
+                      - containerPort: 7081
+                        name: monitor
+                  - name: integration-test
+                    image: integration-test
+                    env:
+                      - name: OUTPUT_EXCHANGE
+                        value: "{{args.test-exchange-name}}"
+                      - name: TEST_MODE
+                        value: "PRODUCER_TEST"
+                      - name: VERIFY_TIMEOUT_SECONDS
+                        value: "180"
+                      - name: RABBITMQ_HOST
+                        value: rabbitmq
+                      - name: SERVICE_SHUTDOWN_URL
+                        value: "http://localhost:7081/actuator/shutdown"
+                      - name: RABBITMQ_USERNAME
+                        valueFrom:
+                          secretKeyRef:
+                            name: rabbitmq-default-user
+                            key: username
+                      - name: RABBITMQ_PASSWORD
+                        valueFrom:
+                          secretKeyRef:
+                            name: rabbitmq-default-user
+                            key: password
