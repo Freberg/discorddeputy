@@ -11,4 +11,4 @@ resources:
 images:
   - name: api
     newName: freberg/discorddeputy-api
-    newTag: 0.6.5
+    newTag: 0.6.7
