@@ -10,4 +10,4 @@ resources:
 images:
   - name: fetcher-steam
     newName: freberg/discorddeputy-fetcher-steam
-    newTag: 0.6.0
+    newTag: 0.6.7
