@@ -7,7 +7,7 @@ plugins {
 
 ext {
     springCloudVersion = '2025.0.0'
-    springDocVersion = '2.8.13'
+    springDocVersion = '3.0.0'
     immutablesVersion = '2.11.6'
     discord4jVersion = '3.3.0'
     ktorVersion = '3.3.2'
