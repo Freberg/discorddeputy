@@ -10,7 +10,7 @@ resources:
 images:
   - name: fetcher-epic
     newName: freberg/discorddeputy-fetcher-epic
-    newTag: 0.6.7
+    newTag: 0.7.0
   - name: integration-test
     newName: freberg/discorddeputy-integration-test
-    newTag: 0.6.7
+    newTag: 0.7.0
