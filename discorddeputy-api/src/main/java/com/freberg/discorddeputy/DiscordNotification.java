@@ -1,18 +1,18 @@
 package com.freberg.discorddeputy;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.validation.constraints.NotNull;
+import org.jspecify.annotations.NonNull;
 
 import java.time.Instant;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record DiscordNotification(@NotNull String id,
-                                  @NotNull String source,
-                                  @NotNull String type,
-                                  @NotNull Instant timestamp,
-                                  @NotNull String title,
+public record DiscordNotification(@NonNull String id,
+                                  @NonNull String source,
+                                  @NonNull String type,
+                                  @NonNull Instant timestamp,
+                                  @NonNull String title,
                                   String descriptionHeader,
-                                  @NotNull String description,
+                                  @NonNull String description,
                                   String url,
                                   String imageUrl,
                                   String thumbnailUrl) {

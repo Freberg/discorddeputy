@@ -1,15 +1,15 @@
 package com.freberg.discorddeputy;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DiscordNotificationTest {
 
     @Test
-    public void keepUnknownFieldsAfterSerde() throws JsonProcessingException {
+    public void keepUnknownFieldsAfterSerde() throws JacksonException {
         var objectMapper = new ObjectMapper();
         var json = String.format("{\"id\":\"%s\",\"source\":\"%s\",\"unknownField\":\"value\"}", "1", "some_source");
         var deserialized = objectMapper.readValue(json, DiscordNotification.class);

@@ -9,9 +9,8 @@ management:
         readiness:
           include: rabbit
       show-details: always
-  health:
-    probes:
-      enabled: true
+      probes:
+        enabled: true
   server.port: 7083
 spring:
   rabbitmq:
