@@ -1,7 +1,6 @@
 server.port: 8082
 management:
   endpoints:
-    jmx.exposure.include: "*"
     web.exposure.include: "*"
   endpoint:
     health:
@@ -9,9 +8,9 @@ management:
         readiness:
           include: r2dbc
       show-details: always
-  health:
-    probes:
-      enabled: true
+      probes:
+        enabled: true
+      validate-group-membership: false # validation does not find r2dbc
   server.port: 7082
 spring:
   application.name: discorddeputy-api

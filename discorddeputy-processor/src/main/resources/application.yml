@@ -2,7 +2,6 @@ server.port: 8085
 
 management:
   endpoints:
-    jmx.exposure.include: "*"
     web.exposure.include: "*"
   endpoint:
     health:
@@ -10,10 +9,9 @@ management:
         readiness:
           include: r2dbc,rabbit
       show-details: always
-  health:
-    probes:
-      enabled: true
-    rabbit.enabled: true
+      probes:
+        enabled: true
+      validate-group-membership: false # validation does not find r2dbc
   server.port: 7085
 spring:
   application.name: discorddeputy-processor

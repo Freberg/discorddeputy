@@ -1,11 +1,11 @@
 package com.freberg.discorddeputy.repository;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.freberg.discorddeputy.DiscordNotification;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 @Repository
 class CustomizedDiscordNotificationRepositoryImpl implements CustomizedDiscordNotificationRepository {
@@ -23,7 +23,7 @@ class CustomizedDiscordNotificationRepositoryImpl implements CustomizedDiscordNo
         return Mono.fromCallable(() -> {
                     try {
                         return objectMapper.writeValueAsString(notification.fields());
-                    } catch (JsonProcessingException e) {
+                    } catch (JacksonException e) {
                         throw new RuntimeException(e);
                     }
                 })

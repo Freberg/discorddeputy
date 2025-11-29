@@ -1,17 +1,16 @@
 package com.freberg.discorddeputy.repository;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.r2dbc.postgresql.codec.Json;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
-import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.data.convert.ReadingConverter;
 import org.springframework.data.convert.WritingConverter;
 import org.springframework.data.r2dbc.convert.R2dbcCustomConversions;
 import org.springframework.data.r2dbc.dialect.PostgresDialect;
-import org.springframework.lang.NonNull;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -42,10 +41,10 @@ public class JsonConverters {
         }
 
         @Override
-        public Json convert(@NonNull Map<String, Object> source) {
+        public Json convert(Map<String, Object> source) {
             try {
                 return Json.of(objectMapper.writeValueAsString(source));
-            } catch (JsonProcessingException e) {
+            } catch (JacksonException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -60,11 +59,11 @@ public class JsonConverters {
         }
 
         @Override
-        public Map<String, Object> convert(@NonNull Json source) {
+        public Map<String, Object> convert(Json source) {
             try {
                 return objectMapper.readValue(source.asString(), new TypeReference<>() {
                 });
-            } catch (JsonProcessingException e) {
+            } catch (JacksonException e) {
                 throw new RuntimeException(e);
             }
         }

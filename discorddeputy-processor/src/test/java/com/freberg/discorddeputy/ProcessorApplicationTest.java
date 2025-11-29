@@ -1,6 +1,5 @@
 package com.freberg.discorddeputy;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.freberg.discorddeputy.repository.DiscordNotificationRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +18,8 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import reactor.test.StepVerifier;
+import tools.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,7 +45,7 @@ class ProcessorApplicationTest {
     private String bindingName;
 
     @Test
-    public void deduplicate() throws IOException {
+    public void deduplicate() {
         // send new message
         assertIdNotInDatabase("1");
         var input1 = createPayload("1");
@@ -99,8 +98,7 @@ class ProcessorApplicationTest {
                 .verifyComplete();
     }
 
-    private void assertInputAndOutputEquals(DiscordNotification input, Message<byte[]> output)
-            throws IOException {
+    private void assertInputAndOutputEquals(DiscordNotification input, Message<byte[]> output) {
         assertNotNull(output);
         assertEquals(input, OBJECT_MAPPER.readValue(output.getPayload(), DiscordNotification.class));
     }
