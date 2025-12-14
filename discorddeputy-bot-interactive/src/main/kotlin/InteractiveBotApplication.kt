@@ -83,6 +83,7 @@ fun responseUsingApi(
 ): Mono<Message> {
     return event.deferReply()
         .withEphemeral(true)
+        .retry(3)
         .then(
             mono {
                 try {
