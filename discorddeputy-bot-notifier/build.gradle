@@ -34,3 +34,8 @@ dependencyManagement {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
     }
 }
+
+// discord4j uses jackson2 while spring boot 4 uses jackson 3, below module causes a conflict
+configurations.configureEach {
+    exclude group: 'com.fasterxml.jackson.module', module: 'jackson-module-kotlin'
+}
