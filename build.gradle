@@ -10,7 +10,7 @@ ext {
     immutablesVersion = '2.11.7'
     discord4jVersion = '3.3.0'
     ktorVersion = '3.3.3'
-    junitVersion = '5.13.4'
+    junitVersion = '6.0.1'
 }
 
 allprojects {
