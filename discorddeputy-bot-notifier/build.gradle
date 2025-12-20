@@ -19,6 +19,7 @@ dependencies {
         exclude group: 'commons-logging', module: 'commons-logging'
     }
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'tools.jackson.module:jackson-module-kotlin'
     implementation 'io.micrometer:micrometer-registry-prometheus'
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
@@ -27,9 +28,4 @@ dependencies {
     testImplementation 'io.projectreactor:reactor-test'
     testImplementation 'org.springframework.amqp:spring-rabbit-test'
     testImplementation 'org.springframework.cloud:spring-cloud-stream-test-support'
-}
-
-// discord4j uses jackson2 while spring boot 4 uses jackson 3, below module causes a conflict
-configurations.configureEach {
-    exclude group: 'com.fasterxml.jackson.module', module: 'jackson-module-kotlin'
 }

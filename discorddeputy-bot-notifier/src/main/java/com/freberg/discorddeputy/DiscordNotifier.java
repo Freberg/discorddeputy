@@ -4,11 +4,9 @@ import com.freberg.discorddeputy.api.DiscordNotification;
 import discord4j.core.DiscordClient;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.lifecycle.ReadyEvent;
-import discord4j.core.object.entity.Guild;
-import discord4j.core.object.entity.channel.Channel;
 import discord4j.core.object.entity.channel.TextChannel;
 import discord4j.core.spec.EmbedCreateSpec;
-import discord4j.discordjson.json.MessageCreateRequest;
+import discord4j.core.spec.MessageCreateSpec;
 import discord4j.rest.util.Color;
 import discord4j.rest.util.Permission;
 import org.slf4j.Logger;
@@ -39,14 +37,14 @@ public class DiscordNotifier implements ApplicationRunner {
 
     public void onNewNotification(DiscordNotification notification) {
         var embed = toEmbedCreateSpec(notification);
-        var messageCreateRequest = MessageCreateRequest.builder()
-                .embed(embed.asRequest())
+        var messageCreateRequest = MessageCreateSpec.builder()
+                .addEmbed(embed)
                 .build();
         dispatchMessage(messageCreateRequest);
     }
 
 
-    private void dispatchMessage(MessageCreateRequest message) {
+    private void dispatchMessage(MessageCreateSpec message) {
         client.getGuilds()
                 .flatMap(guild -> guild.getChannels()
                         .ofType(TextChannel.class)
@@ -54,7 +52,6 @@ public class DiscordNotifier implements ApplicationRunner {
                                 .map(permissions -> permissions.contains(Permission.SEND_MESSAGES)
                                         && permissions.contains(Permission.VIEW_CHANNEL))
                         )
-                        .map(TextChannel::getRestChannel)
                         .flatMap(channel -> channel.createMessage(message))
                 )
                 .subscribe();
