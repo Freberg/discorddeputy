@@ -33,7 +33,7 @@ class ProcessorApplicationTest {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     @Container
     @ServiceConnection
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(DockerImageName.parse("postgres:15-alpine"));
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(DockerImageName.parse("postgres:17.5-alpine"));
 
     @Autowired
     private InputDestination input;
@@ -92,6 +92,7 @@ class ProcessorApplicationTest {
                 .expectNextMatches(Boolean.FALSE::equals)
                 .verifyComplete();
     }
+
     private void assertIdInDatabase(String id) {
         StepVerifier.create(repository.existsById(id))
                 .expectNextMatches(Boolean.TRUE::equals)
