@@ -32,7 +32,7 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-testcontainers'
     testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
-    testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
-    testImplementation "org.testcontainers:postgresql:${testcontainersVersion}"
-    testImplementation "org.testcontainers:r2dbc:${testcontainersVersion}"
+    testImplementation "org.testcontainers:testcontainers-junit-jupiter:${testcontainersVersion}"
+    testImplementation "org.testcontainers:testcontainers-postgresql:${testcontainersVersion}"
+    testImplementation "org.testcontainers:testcontainers-r2dbc:${testcontainersVersion}"
 }
