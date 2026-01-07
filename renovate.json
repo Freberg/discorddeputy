@@ -5,12 +5,17 @@
     ":separateMajorReleases",
     ":combinePatchMinorReleases"
   ],
-  "enabledManagers": ["gradle", "gradle-wrapper"],
+  "enabledManagers": [
+    "gradle",
+    "gradle-wrapper"
+  ],
   "packageRules": [
     {
       "description": "Group all Kotlin-related updates together",
-      "matchPackagePrefixes": ["org.jetbrains.kotlin"],
-      "groupName": "kotlin"
+      "groupName": "kotlin",
+      "matchPackageNames": [
+        "org.jetbrains.kotlin{/,}**"
+      ]
     }
   ]
 }
