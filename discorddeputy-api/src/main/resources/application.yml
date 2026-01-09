@@ -6,15 +6,19 @@ management:
     health:
       group:
         readiness:
-          include: r2dbc
+          include: db
       show-details: always
       probes:
         enabled: true
       validate-group-membership: false # validation does not find r2dbc
   server.port: 7082
 spring:
-  application.name: discorddeputy-api
-  r2dbc:
-    url: ${SPRING_R2DBC_URL:r2dbc:postgresql://localhost:5432/discordnotifications}
-    username: ${SPRING_R2DBC_USERNAME:postgres}
-    password: ${SPRING_R2DBC_PASSWORD:postgres}
+  application:
+    name: discorddeputy-api
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/discordnotifications}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+  threads:
+    virtual:
+      enabled: true
