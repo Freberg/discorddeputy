@@ -33,7 +33,7 @@ spec:
           name: api
           env:
             - name: SPRING_R2DBC_URL
-              value: r2dbc:postgresql://discord-deputy-db-ro:5432/app
+              value: jdbc:postgresql://discord-deputy-db-ro:5432/app
             - name: SPRING_R2DBC_USERNAME
               valueFrom:
                 secretKeyRef:
