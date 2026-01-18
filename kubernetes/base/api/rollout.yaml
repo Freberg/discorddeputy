@@ -32,14 +32,14 @@ spec:
           imagePullPolicy: Always
           name: api
           env:
-            - name: SPRING_R2DBC_URL
+            - name: SPRING_DATASOURCE_URL
               value: jdbc:postgresql://discord-deputy-db-ro:5432/app
-            - name: SPRING_R2DBC_USERNAME
+            - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: discord-deputy-db-app
                   key: username
-            - name: SPRING_R2DBC_PASSWORD
+            - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: discord-deputy-db-app
