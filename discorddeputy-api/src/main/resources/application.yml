@@ -10,7 +10,6 @@ management:
       show-details: always
       probes:
         enabled: true
-      validate-group-membership: false # validation does not find r2dbc
   server.port: 7082
 spring:
   application:
