@@ -7,7 +7,8 @@
   ],
   "enabledManagers": [
     "gradle",
-    "gradle-wrapper"
+    "gradle-wrapper",
+    "github-actions"
   ],
   "packageRules": [
     {
