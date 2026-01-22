@@ -8,7 +8,8 @@
   "enabledManagers": [
     "gradle",
     "gradle-wrapper",
-    "github-actions"
+    "github-actions",
+    "kustomize"
   ],
   "packageRules": [
     {
@@ -17,6 +18,13 @@
       "matchPackageNames": [
         "org.jetbrains.kotlin{/,}**"
       ]
+    },
+    {
+      "description": "Separate PRs for Kustomize services",
+      "matchManagers": ["kustomize"],
+      "matchPaths": ["kubernetes/**"],
+      "labels": ["gitops", "no-release-notes"],
+      "commitMessagePrefix": "chore(gitops):"
     }
   ]
 }
