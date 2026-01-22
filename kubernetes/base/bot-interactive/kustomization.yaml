@@ -9,4 +9,4 @@ resources:
 images:
   - name: bot-interactive
     newName: freberg/discorddeputy-bot-interactive
-    newTag: 0.7.6
+    newTag: 0.7.8
