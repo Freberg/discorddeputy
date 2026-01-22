@@ -11,7 +11,7 @@ ext {
     springCloudVersion = '2025.1.0'
     immutablesVersion = '2.12.1'
     discord4jVersion = '3.3.0'
-    ktorVersion = '3.3.3'
+    ktorVersion = '3.4.0'
 }
 
 allprojects {
