@@ -1,16 +1,5 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     id 'org.jetbrains.kotlin.jvm'
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.release.set(24)
-}
-
-tasks.withType(KotlinCompile).configureEach {
-    compilerOptions.jvmTarget.set(JvmTarget.JVM_24)
 }
 
 dependencies {
