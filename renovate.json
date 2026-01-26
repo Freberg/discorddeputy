@@ -21,9 +21,16 @@
     },
     {
       "description": "Separate PRs for Kustomize services",
-      "matchManagers": ["kustomize"],
-      "matchPaths": ["kubernetes/**"],
-      "labels": ["gitops", "no-release-notes"],
+      "matchManagers": [
+        "kustomize"
+      ],
+      "matchFileNames": [
+        "kubernetes/**"
+      ],
+      "labels": [
+        "gitops",
+        "no-release-notes"
+      ],
       "commitMessagePrefix": "chore(gitops):"
     }
   ]
