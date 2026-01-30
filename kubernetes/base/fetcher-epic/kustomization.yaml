@@ -13,4 +13,4 @@ images:
     newTag: 0.7.10
   - name: integration-test
     newName: freberg/discorddeputy-integration-test
-    newTag: 0.7.9
+    newTag: 0.7.10
