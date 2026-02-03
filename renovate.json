@@ -31,7 +31,9 @@
         "gitops",
         "no-release-notes"
       ],
-      "commitMessagePrefix": "chore(gitops):"
+      "commitMessagePrefix": "chore(gitops):",
+      "prConcurrentLimit": 0,
+      "prHourlyLimit": 0
     }
   ]
 }
