@@ -5,6 +5,7 @@ metadata:
 spec:
   replicas: 3
   persistence:
+    storage: 2Gi
     storageClassName: longhorn-single-replica
   resources:
     requests:
