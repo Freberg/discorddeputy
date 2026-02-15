@@ -17,7 +17,11 @@ patches:
   - path: resources-patch.yaml
     target: 
       kind: Deployment
-      labelSelector: "app in (processor, bot-notifier, bot-interactive)"
+      labelSelector: "app in (bot-interactive)"
+  - path: reactive-resources-patch.yaml
+    target:
+      kind: Deployment
+      labelSelector: "app in (bot-notifier, processor)"
   - path: actuator-probes-patch.yaml
     target:
       kind: Rollout
