@@ -6,7 +6,7 @@
       cpu: '1'
     limits:
       memory: 300Mi
-      cpu: '1'
+      cpu: '2'
 - op: add
   path: /spec/template/spec/containers/0/env/-
   value:
