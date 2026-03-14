@@ -14,3 +14,20 @@ spec:
     limits:
       cpu: '1'
       memory: 1Gi
+  override:
+    statefulSet:
+      spec:
+        template:
+          spec:
+            containers:
+              - name: rabbitmq
+                startupProbe:
+                  exec:
+                    command:
+                    - /bin/bash
+                    - -c
+                    - "rabbitmqctl eval 'rabbit_nodes:reached_target_cluster_size().' | grep -q '^true$'"
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  failureThreshold: 30
+                  timeoutSeconds: 15
