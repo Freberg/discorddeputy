@@ -18,6 +18,7 @@ import reactor.core.publisher.Mono
 import java.time.Instant
 
 val LOGGER: Logger = LoggerFactory.getLogger(object {}.javaClass)
+val API_CLIENT: ApiClient = ApiClient(System.getenv("API_URL"))
 
 fun main() {
     val client = DiscordClientBuilder.create(System.getenv("DISCORD_TOKEN"))
@@ -33,7 +34,11 @@ fun main() {
 
     client.on(ReadyEvent::class.java).subscribe { LOGGER.info("Logged in as {}", it.self.username) }
 
-    client.on(ChatInputInteractionEvent::class.java) { handle(createApiClient(), it) }
+    client.on(ChatInputInteractionEvent::class.java) { 
+          it.deferReply()
+            .withEphemeral(true)
+            .then(handle(it))
+        }
         .then(client.onDisconnect())
         .block()
 }
@@ -54,9 +59,7 @@ fun createCommands(commandFiles: List<String>): List<ApplicationCommandRequest> 
         .toList()
 }
 
-fun createApiClient(): ApiClient = ApiClient(System.getenv("API_URL"))
-
-fun handle(apiClient: ApiClient, event: ChatInputInteractionEvent): Mono<Message> {
+fun handle(event: ChatInputInteractionEvent): Mono<Message> {
     return when (event.commandName) {
         "offers" -> {
             val offerType = event.getOption("type")
@@ -65,11 +68,11 @@ fun handle(apiClient: ApiClient, event: ChatInputInteractionEvent): Mono<Message
                 .orElse("current")
 
             if (offerType == "upcoming")
-                responseUsingApi(event) { apiClient.upcomingOffers() } else
-                responseUsingApi(event) { apiClient.currentOffers() }
+                responseUsingApi(event) { API_CLIENT.upcomingOffers() } else
+                responseUsingApi(event) { API_CLIENT.currentOffers() }
         }
 
-        "news" -> responseUsingApi(event) { apiClient.latestNews() }
+        "news" -> responseUsingApi(event) { API_CLIENT.latestNews() }
         else -> {
             LOGGER.error("Unknown command \"{}\"", event.commandName)
             return Mono.empty()
@@ -81,24 +84,20 @@ fun responseUsingApi(
     event: ChatInputInteractionEvent,
     apiCall: suspend () -> List<DiscordNotification>
 ): Mono<Message> {
-    return event.deferReply()
-        .withEphemeral(true)
-        .retry(3)
-        .then(
-            mono {
-                try {
-                    val notifications = apiCall()
-                    val followupSpec = toInteractionFollowupCreateSpec(notifications)
-                    event.createFollowup(followupSpec).awaitSingle()
-                } catch (e: Exception) {
-                    LOGGER.error("API call failed", e)
-                    event.createFollowup(
-                        InteractionFollowupCreateSpec.builder()
-                            .content("An error occurred while fetching data.")
-                            .build()
-                    ).awaitSingle()
-                }
-            })
+    return mono {
+        try {
+            val notifications = apiCall()
+            val followupSpec = toInteractionFollowupCreateSpec(notifications)
+            event.createFollowup(followupSpec).awaitSingle()
+        } catch (e: Exception) {
+            LOGGER.error("API call failed", e)
+            event.createFollowup(
+            InteractionFollowupCreateSpec.builder()
+                .content("An error occurred while fetching data.")
+                .build()
+            ).awaitSingle()
+        }
+    }
 }
 
 fun toInteractionFollowupCreateSpec(notifications: List<DiscordNotification>): InteractionFollowupCreateSpec {
@@ -151,5 +150,4 @@ fun toListResponse(notifications: List<DiscordNotification>): EmbedCreateSpec {
     }
     return builder.build()
 }
-
 
