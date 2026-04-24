@@ -8,7 +8,7 @@ jar {
 }
 
 ext {
-    set('testcontainersVersion', "2.0.4")
+    set('testcontainersVersion', "2.0.5")
 }
 
 dependencies {
