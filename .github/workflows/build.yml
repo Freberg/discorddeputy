@@ -40,7 +40,7 @@ jobs:
           fail-on-error: true
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
       - name: Set up docker buildx
         uses: docker/setup-buildx-action@v3
 
