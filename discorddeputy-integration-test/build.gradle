@@ -3,6 +3,17 @@ plugins {
     id 'org.jetbrains.kotlin.jvm'
 }
 
+java {
+    targetCompatibility = JavaVersion.VERSION_26
+    sourceCompatibility = JavaVersion.VERSION_26
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_26
+    }
+}
+
 jar {
     enabled = false
 }
