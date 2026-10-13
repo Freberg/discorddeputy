@@ -29,5 +29,5 @@ patches:
   - path: resources-patch.yaml
     target:
       kind: Rollout
-      labelSelector: "app in (api, fetcher-epic)"
+      labelSelector: "app in (api)"
 
