@@ -11,3 +11,8 @@ images:
   - name: processor
     newName: freberg/discorddeputy-processor
     newTag: 0.7.22
+
+patches:
+  - path: resources-patch.yaml
+    target:
+      kind: Deployment

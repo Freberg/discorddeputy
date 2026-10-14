@@ -14,20 +14,7 @@ patches:
     target:
       kind: Deployment
       labelSelector: "app in (processor, bot-notifier)"
-  - path: resources-patch.yaml
-    target: 
-      kind: Deployment
-      labelSelector: "app in (bot-interactive)"
-  - path: reactive-resources-patch.yaml
-    target:
-      kind: Deployment
-      labelSelector: "app in (bot-notifier, processor)"
   - path: actuator-probes-patch.yaml
     target:
       kind: Rollout
       labelSelector: "app in (api, fetcher-epic)"
-  - path: resources-patch.yaml
-    target:
-      kind: Rollout
-      labelSelector: "app in (api)"
-

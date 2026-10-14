@@ -12,3 +12,9 @@ images:
   - name: api
     newName: freberg/discorddeputy-api
     newTag: 0.7.22
+
+patches:
+  - path: resources-patch.yaml
+    target:
+      kind: Rollout
+

@@ -1,0 +1,14 @@
+- op: add
+  path: /spec/template/spec/containers/0/resources
+  value:
+    requests:
+      memory: 256Mi
+      cpu: '1'
+    limits:
+      memory: 256Mi
+      cpu: '2'
+- op: add
+  path: /spec/template/spec/containers/0/env/-
+  value:
+    name: JDK_JAVA_OPTIONS
+    value: "-XX:MaxRAMPercentage=50.0 -XX:+UseG1GC"      

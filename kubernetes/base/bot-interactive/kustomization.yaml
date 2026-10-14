@@ -10,3 +10,9 @@ images:
   - name: bot-interactive
     newName: freberg/discorddeputy-bot-interactive
     newTag: 0.7.22
+
+patches:
+  - path: resources-patch.yaml
+    target:
+      kind: Deployment
+

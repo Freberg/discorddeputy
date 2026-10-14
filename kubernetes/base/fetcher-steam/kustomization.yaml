@@ -11,3 +11,8 @@ images:
   - name: fetcher-steam
     newName: freberg/discorddeputy-fetcher-steam
     newTag: 0.7.22
+
+patches:
+  - path: resources-patch.yaml
+    target:
+      kind: Deployment
