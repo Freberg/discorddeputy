@@ -9,7 +9,7 @@ resources:
 images:
   - name: bot-interactive
     newName: freberg/discorddeputy-bot-interactive
-    newTag: 0.7.22
+    newTag: 0.8.0
 
 patches:
   - path: resources-patch.yaml
