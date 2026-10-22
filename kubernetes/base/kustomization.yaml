@@ -18,3 +18,11 @@ patches:
     target:
       kind: Rollout
       labelSelector: "app in (api, fetcher-epic)"
+  - path: malloc-arena-patch.yaml
+    target:
+      kind: Deployment
+      labelSelector: "app in (processor, bot-notifier)"
+  - path: malloc-arena-patch.yaml
+    target:
+      kind: Rollout
+      labelSelector: "app in (api, fetcher-epic)"
