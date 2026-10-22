@@ -21,7 +21,7 @@ patches:
   - path: malloc-arena-patch.yaml
     target:
       kind: Deployment
-      labelSelector: "app in (processor, bot-notifier)"
+      labelSelector: "app in (processor, bot-notifier, bot-interactive)"
   - path: malloc-arena-patch.yaml
     target:
       kind: Rollout
