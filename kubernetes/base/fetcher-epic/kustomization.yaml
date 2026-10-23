@@ -13,7 +13,7 @@ images:
     newTag: 0.8.0
   - name: integration-test
     newName: freberg/discorddeputy-integration-test
-    newTag: 0.8.0
+    newTag: 0.8.1
 
 patches:
   - path: resources-patch.yaml
