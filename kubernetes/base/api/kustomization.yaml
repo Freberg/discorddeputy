@@ -11,7 +11,7 @@ resources:
 images:
   - name: api
     newName: freberg/discorddeputy-api
-    newTag: 0.8.0
+    newTag: 0.8.1
 
 patches:
   - path: resources-patch.yaml
