@@ -1,11 +1,11 @@
 plugins {
-    id 'org.springframework.boot' version '4.1.2' apply false
+    id 'org.springframework.boot' version '4.2.0' apply false
     id 'org.jetbrains.kotlin.jvm' version '2.4.21' apply false
     id 'org.jetbrains.kotlin.plugin.spring' version '2.4.21' apply false
 }
 
 ext {
-    springCloudVersion = '2025.1.4'
+    springCloudVersion = '2026.0.0'
     immutablesVersion = '2.12.3'
     discord4jVersion = '3.3.3'
     ktorVersion = '3.6.1'
