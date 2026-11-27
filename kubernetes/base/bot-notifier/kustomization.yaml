@@ -10,7 +10,7 @@ resources:
 images:
   - name: bot-notifier
     newName: freberg/discorddeputy-bot-notifier
-    newTag: 0.8.1
+    newTag: 0.8.2
 
 patches:
   - path: resources-patch.yaml
